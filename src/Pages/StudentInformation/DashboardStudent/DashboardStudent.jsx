@@ -190,19 +190,7 @@ export default function DashboardStudent() {
     setLocalNotifications([]);
   };
 
-  // Test notification function
-  const testNotification = () => {
-    setLocalNotifications((prev) => [
-      {
-        id: Date.now(),
-        message: "Test notification - Your enrollment has been confirmed!",
-        type: "test",
-        read: false,
-        timestamp: new Date(),
-      },
-      ...prev,
-    ]);
-  };
+
 
   // Close popup on outside click
   useEffect(() => {
@@ -271,34 +259,37 @@ export default function DashboardStudent() {
       {showNotifications && (
         <div className={styles.notificationPopup} ref={notificationRef}>
           <div className={styles.notificationHeader}>
-            <h3>Notifications</h3>
-            <div className={styles.headerActions}>
-              <button
-                className={styles.testButton}
-                onClick={testNotification}
-                title="Test Notification"
-              >
-                Test
-              </button>
+            <div className={styles.headerTitle}>
+              <i className="fas fa-bell"></i>
+              <h3>Notifications</h3>
+              {unreadCount > 0 && (
+                <span className={styles.headerBadge}>{unreadCount}</span>
+              )}
+            </div>
+            {localNotifications.length > 0 && (
               <button
                 className={styles.clearButton}
                 onClick={clearAllNotifications}
+                title="Clear All Notifications"
               >
+                <i className="fas fa-trash-alt"></i>
                 Clear All
               </button>
-            </div>
+            )}
           </div>
           <div className={styles.notificationList}>
             {localNotifications.length === 0 ? (
               <div className={styles.noNotifications}>
-                No notifications
+                <div className={styles.emptyIcon}>
+                  <i className="far fa-bell-slash"></i>
+                </div>
+                <h4>No notifications yet</h4>
+                <p>You'll see enrollment updates and important messages here</p>
                 <div className={styles.connectionInfo}>
-                  Status: {connectionStatus}
-                  {signalRNotifications && (
-                    <div style={{ marginTop: '8px', fontSize: '11px', color: '#007bff' }}>
-                      Latest from SignalR: {signalRNotifications}
-                    </div>
-                  )}
+                  <div className={styles.connectionIndicator}>
+                    <span className={`${styles.statusDot} ${isConnected ? styles.connected : styles.disconnected}`}></span>
+                    <span>{connectionStatus}</span>
+                  </div>
                 </div>
               </div>
             ) : (
@@ -310,17 +301,33 @@ export default function DashboardStudent() {
                   }`}
                   onClick={() => markAsRead(notification.id)}
                 >
+                  <div className={styles.notificationIcon}>
+                    {notification.type === "signalr" ? (
+                      <i className="fas fa-graduation-cap"></i>
+                    ) : (
+                      <i className="fas fa-info-circle"></i>
+                    )}
+                  </div>
                   <div className={styles.notificationContent}>
-                    <div className={styles.notificationType}>
-                      {notification.type?.toUpperCase()}
+                    <div className={styles.messageText}>
+                      {notification.message}
                     </div>
-                    <p>{notification.message}</p>
-                    <span className={styles.notificationTime}>
-                      {new Date(notification.timestamp).toLocaleString()}
-                    </span>
+                    <div className={styles.notificationMeta}>
+                      <span className={styles.notificationTime}>
+                        {new Date(notification.timestamp).toLocaleTimeString([], {
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
+                      </span>
+                      <span className={styles.notificationDate}>
+                        {new Date(notification.timestamp).toLocaleDateString()}
+                      </span>
+                    </div>
                   </div>
                   {!notification.read && (
-                    <div className={styles.unreadDot}></div>
+                    <div className={styles.unreadIndicator}>
+                      <div className={styles.unreadDot}></div>
+                    </div>
                   )}
                 </div>
               ))

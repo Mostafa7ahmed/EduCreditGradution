@@ -159,19 +159,7 @@ export default function DashboardTeacher() {
     setLocalNotifications([]);
   };
 
-  // Test notification function
-  const testNotification = () => {
-    setLocalNotifications((prev) => [
-      {
-        id: Date.now(),
-        message: "Test notification - New student enrolled in your course!",
-        type: "test",
-        read: false,
-        timestamp: new Date(),
-      },
-      ...prev,
-    ]);
-  };
+
 
   useEffect(() => {
     if (decodedToken?.userId) {
@@ -253,34 +241,37 @@ export default function DashboardTeacher() {
       {showNotifications && (
         <div className={dashboardTeacher.notificationPopup} ref={notificationRef}>
           <div className={dashboardTeacher.notificationHeader}>
-            <h3>Notifications</h3>
-            <div className={dashboardTeacher.headerActions}>
-              <button
-                className={dashboardTeacher.testButton}
-                onClick={testNotification}
-                title="Test Notification"
-              >
-                Test
-              </button>
+            <div className={dashboardTeacher.headerTitle}>
+              <i className="fas fa-bell"></i>
+              <h3>Notifications</h3>
+              {unreadCount > 0 && (
+                <span className={dashboardTeacher.headerBadge}>{unreadCount}</span>
+              )}
+            </div>
+            {localNotifications.length > 0 && (
               <button
                 className={dashboardTeacher.clearButton}
                 onClick={clearAllNotifications}
+                title="Clear All Notifications"
               >
+                <i className="fas fa-trash-alt"></i>
                 Clear All
               </button>
-            </div>
+            )}
           </div>
           <div className={dashboardTeacher.notificationList}>
             {localNotifications.length === 0 ? (
               <div className={dashboardTeacher.noNotifications}>
-                No notifications
+                <div className={dashboardTeacher.emptyIcon}>
+                  <i className="far fa-bell-slash"></i>
+                </div>
+                <h4>No notifications yet</h4>
+                <p>You'll see student enrollment updates and course notifications here</p>
                 <div className={dashboardTeacher.connectionInfo}>
-                  Status: {connectionStatus}
-                  {signalRNotifications && (
-                    <div style={{ marginTop: '8px', fontSize: '11px', color: '#007bff' }}>
-                      Latest from SignalR: {signalRNotifications}
-                    </div>
-                  )}
+                  <div className={dashboardTeacher.connectionIndicator}>
+                    <span className={`${dashboardTeacher.statusDot} ${isConnected ? dashboardTeacher.connected : dashboardTeacher.disconnected}`}></span>
+                    <span>{connectionStatus}</span>
+                  </div>
                 </div>
               </div>
             ) : (
@@ -292,17 +283,33 @@ export default function DashboardTeacher() {
                   }`}
                   onClick={() => markAsRead(notification.id)}
                 >
+                  <div className={dashboardTeacher.notificationIcon}>
+                    {notification.type === "signalr" ? (
+                      <i className="fas fa-chalkboard-teacher"></i>
+                    ) : (
+                      <i className="fas fa-info-circle"></i>
+                    )}
+                  </div>
                   <div className={dashboardTeacher.notificationContent}>
-                    <div className={dashboardTeacher.notificationType}>
-                      {notification.type?.toUpperCase()}
+                    <div className={dashboardTeacher.messageText}>
+                      {notification.message}
                     </div>
-                    <p>{notification.message}</p>
-                    <span className={dashboardTeacher.notificationTime}>
-                      {new Date(notification.timestamp).toLocaleString()}
-                    </span>
+                    <div className={dashboardTeacher.notificationMeta}>
+                      <span className={dashboardTeacher.notificationTime}>
+                        {new Date(notification.timestamp).toLocaleTimeString([], {
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
+                      </span>
+                      <span className={dashboardTeacher.notificationDate}>
+                        {new Date(notification.timestamp).toLocaleDateString()}
+                      </span>
+                    </div>
                   </div>
                   {!notification.read && (
-                    <div className={dashboardTeacher.unreadDot}></div>
+                    <div className={dashboardTeacher.unreadIndicator}>
+                      <div className={dashboardTeacher.unreadDot}></div>
+                    </div>
                   )}
                 </div>
               ))
