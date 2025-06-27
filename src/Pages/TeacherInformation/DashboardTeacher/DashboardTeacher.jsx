@@ -1,4 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import SearchNotification from "../../../Shared/Css/SearchInputNotification.module.css";
 import dashboardTeacher from "./DashboardTeacher.module.css";
 import Information from "../../../../src/Shared/Css/InfoAndInformation.module.css";
@@ -9,6 +10,7 @@ import { authContext } from "../../../Context/AuthContextProvider";
 import { baseUrl } from "../../../Env/Env";
 import Swal from "sweetalert2";
 import Pagination from "../../../Shared/Css/Pagination.module.css"; // Import Pagination styles
+import { useNotificationService } from "../../../Service/NotificationService";
 
 export default function DashboardTeacher() {
   const [teacherId, setTeacherId] = useState("");
@@ -21,9 +23,38 @@ export default function DashboardTeacher() {
     successRate: 0,
   });
   const [currentPage, setCurrentPage] = useState(1); // State for current page
+  const [showNotifications, setShowNotifications] = useState(false);
   const pageSize = 4; // Number of items per page
+  const location = useLocation();
+  const notificationRef = useRef(null);
 
   const { decodedToken, accessToken } = useContext(authContext);
+  
+  // Use the clean notification service
+  const { notifications: signalRNotifications, isConnected } = useNotificationService();
+  const [localNotifications, setLocalNotifications] = useState([]);
+
+  // Handle notifications from SignalR service
+  useEffect(() => {
+    if (signalRNotifications) {
+      console.log("Teacher received SignalR notification:", signalRNotifications);
+      setLocalNotifications((prev) => [
+        {
+          id: Date.now(),
+          message: signalRNotifications,
+          type: "signalr",
+          read: false,
+          timestamp: new Date(),
+        },
+        ...prev,
+      ]);
+      
+      // Refresh courses if it's an enrollment-related notification
+      if (signalRNotifications.includes("👨‍🏫") || signalRNotifications.includes("🧑‍🎓")) {
+        fetchCourses();
+      }
+    }
+  }, [signalRNotifications]);
 
   // Fetch statistics for the cards
   const fetchStatistics = async () => {
@@ -109,6 +140,39 @@ export default function DashboardTeacher() {
     setCurrentPage(page);
   };
 
+  // Notification management functions
+  const toggleNotifications = () => {
+    setShowNotifications(!showNotifications);
+  };
+
+  const markAsRead = (notificationId) => {
+    setLocalNotifications((prev) =>
+      prev.map((notification) =>
+        notification.id === notificationId
+          ? { ...notification, read: true }
+          : notification
+      )
+    );
+  };
+
+  const clearAllNotifications = () => {
+    setLocalNotifications([]);
+  };
+
+  // Test notification function
+  const testNotification = () => {
+    setLocalNotifications((prev) => [
+      {
+        id: Date.now(),
+        message: "Test notification - New student enrolled in your course!",
+        type: "test",
+        read: false,
+        timestamp: new Date(),
+      },
+      ...prev,
+    ]);
+  };
+
   useEffect(() => {
     if (decodedToken?.userId) {
       setTeacherId(decodedToken.userId);
@@ -122,7 +186,34 @@ export default function DashboardTeacher() {
     }
   }, [teacherId]);
 
+  // Close popup on outside click
+  useEffect(() => {
+    if (!showNotifications) return;
+    function handleClickOutside(event) {
+      if (
+        notificationRef.current &&
+        !notificationRef.current.contains(event.target) &&
+        !event.target.closest(`.${SearchNotification.notificationIcon}`)
+      ) {
+        setShowNotifications(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showNotifications]);
+
+  // Close popup on route change
+  useEffect(() => {
+    setShowNotifications(false);
+  }, [location]);
+
   const totalPages = Math.ceil(filteredSchedules.length / pageSize);
+  
+  // Get unread notifications count and connection status
+  const unreadCount = localNotifications.filter((n) => !n.read).length;
+  const connectionStatus = isConnected ? "Connected" : "Disconnected";
 
   return (
     <>
@@ -138,11 +229,87 @@ export default function DashboardTeacher() {
               onChange={handleSearch} // Update search term on input change
             />
           </div>
-          <div className={SearchNotification.notificationIcon}>
-            <i className="far fa-bell"></i>
+          <div className={dashboardTeacher.notificationContainer}>
+            <div
+              className={SearchNotification.notificationIcon}
+              onClick={toggleNotifications}
+            >
+              <i className="far fa-bell"></i>
+              {unreadCount > 0 && (
+                <span className={dashboardTeacher.notificationBadge}>
+                  {unreadCount}
+                </span>
+              )}
+            </div>
+            {/* Connection status indicator */}
+            <div className={dashboardTeacher.connectionStatus}>
+              <span className={`${dashboardTeacher.statusDot} ${isConnected ? dashboardTeacher.connected : dashboardTeacher.disconnected}`}></span>
+              <span className={dashboardTeacher.statusText}>{connectionStatus}</span>
+            </div>
           </div>
         </div>
       </div>
+
+      {showNotifications && (
+        <div className={dashboardTeacher.notificationPopup} ref={notificationRef}>
+          <div className={dashboardTeacher.notificationHeader}>
+            <h3>Notifications</h3>
+            <div className={dashboardTeacher.headerActions}>
+              <button
+                className={dashboardTeacher.testButton}
+                onClick={testNotification}
+                title="Test Notification"
+              >
+                Test
+              </button>
+              <button
+                className={dashboardTeacher.clearButton}
+                onClick={clearAllNotifications}
+              >
+                Clear All
+              </button>
+            </div>
+          </div>
+          <div className={dashboardTeacher.notificationList}>
+            {localNotifications.length === 0 ? (
+              <div className={dashboardTeacher.noNotifications}>
+                No notifications
+                <div className={dashboardTeacher.connectionInfo}>
+                  Status: {connectionStatus}
+                  {signalRNotifications && (
+                    <div style={{ marginTop: '8px', fontSize: '11px', color: '#007bff' }}>
+                      Latest from SignalR: {signalRNotifications}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ) : (
+              localNotifications.map((notification) => (
+                <div
+                  key={notification.id}
+                  className={`${dashboardTeacher.notificationItem} ${
+                    notification.read ? dashboardTeacher.read : dashboardTeacher.unread
+                  }`}
+                  onClick={() => markAsRead(notification.id)}
+                >
+                  <div className={dashboardTeacher.notificationContent}>
+                    <div className={dashboardTeacher.notificationType}>
+                      {notification.type?.toUpperCase()}
+                    </div>
+                    <p>{notification.message}</p>
+                    <span className={dashboardTeacher.notificationTime}>
+                      {new Date(notification.timestamp).toLocaleString()}
+                    </span>
+                  </div>
+                  {!notification.read && (
+                    <div className={dashboardTeacher.unreadDot}></div>
+                  )}
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      )}
       <div className={dashboardTeacher.container}>
         <div className={dashboardTeacher.cardsContainer}>
           <div
