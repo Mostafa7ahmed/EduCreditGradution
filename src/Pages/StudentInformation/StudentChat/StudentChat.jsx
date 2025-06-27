@@ -1,8 +1,9 @@
-import{ useContext, useEffect, useState, useRef } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import styles from "./StudentChat.module.css";
 import axios from "axios";
 import { authContext } from "../../../Context/AuthContextProvider";
 import { baseUrl } from "../../../Env/Env";
+import * as signalR from "@microsoft/signalr";
 
 export default function StudentChat() {
   const [chatGroups, setChatGroups] = useState([]);
@@ -10,9 +11,59 @@ export default function StudentChat() {
   const [selectedCourseId, setSelectedCourseId] = useState(null);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
+  const [typingUsers, setTypingUsers] = useState([]);
   const { accessToken, decodedToken } = useContext(authContext);
   const id = decodedToken?.userId;
-  const pollingRef = useRef(null);
+  const userName = decodedToken?.name || "User";
+  const connectionRef = useRef(null);
+  const typingTimeoutRef = useRef(null);
+
+  // Initialize SignalR connection
+  useEffect(() => {
+    if (!accessToken) return;
+
+    // Create SignalR connection
+    const connection = new signalR.HubConnectionBuilder()
+      .withUrl(`${baseUrl.replace('/api/', '')}chatHub`, {
+        accessTokenFactory: () => accessToken,
+      })
+      .withAutomaticReconnect()
+      .build();
+
+    connectionRef.current = connection;
+
+    // Set up event handlers
+    connection.on("ReceiveMessage", (message) => {
+      setMessages((prevMessages) => [...prevMessages, message]);
+    });
+
+    connection.on("UserTyping", (userName) => {
+      setTypingUsers((prev) => {
+        if (!prev.includes(userName)) {
+          return [...prev, userName];
+        }
+        return prev;
+      });
+
+      // Remove typing indicator after 3 seconds
+      setTimeout(() => {
+        setTypingUsers((prev) => prev.filter((user) => user !== userName));
+      }, 3000);
+    });
+
+    // Start connection
+    connection
+      .start()
+      .then(() => {
+        console.log("SignalR Connected");
+      })
+      .catch((err) => console.error("SignalR Connection Error:", err));
+
+    // Cleanup on unmount
+    return () => {
+      connection.stop();
+    };
+  }, [accessToken, baseUrl]);
 
   // جلب الجروبات
   const fetchChatGroups = async () => {
@@ -47,7 +98,7 @@ export default function StudentChat() {
       });
       setMessages(response.data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
@@ -58,37 +109,60 @@ export default function StudentChat() {
     }
   }, [id, accessToken]);
 
+  // Fetch messages when course is selected
   useEffect(() => {
     if (!selectedCourseId) return;
     fetchMessages(selectedCourseId);
-    if (pollingRef.current) clearInterval(pollingRef.current);
-    pollingRef.current = setInterval(() => {
-      fetchMessages(selectedCourseId);
-    }, 50000000);
-    return () => {
-      if (pollingRef.current) clearInterval(pollingRef.current);
-    };
-    // eslint-disable-next-line
   }, [selectedCourseId, accessToken]);
 
   const sendMessage = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() || !connectionRef.current) return;
+
     try {
-      await axios.post(
-        `${baseUrl}Chat/messages`,
-        {
-          groupId: selectedCourseId,
-          message: input,
-        },
-        {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        }
-      );
-      setInput("");
-      fetchMessages(selectedCourseId); 
+      // Send message through SignalR
+      if (connectionRef.current.state === signalR.HubConnectionState.Connected) {
+        await connectionRef.current.invoke("SendMessageToGroup", selectedCourseId, input);
+        setInput("");
+      } else {
+        // Fallback to HTTP if SignalR is not connected
+        await axios.post(
+          `${baseUrl}Chat/messages`,
+          {
+            courseId: selectedCourseId,
+            message: input,
+          },
+          {
+            headers: { Authorization: `Bearer ${accessToken}` },
+          }
+        );
+        setInput("");
+        fetchMessages(selectedCourseId);
+      }
     } catch (err) {
-      console.log(err)
+      console.error("Error sending message:", err);
+      alert("Failed to send message. Please try again.");
     }
+  };
+
+  const handleTyping = () => {
+    if (!connectionRef.current || connectionRef.current.state !== signalR.HubConnectionState.Connected) {
+      return;
+    }
+
+    // Clear existing timeout
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
+
+    // Send typing notification
+    connectionRef.current.invoke("SendTypingNotification", selectedCourseId, userName).catch((err) => {
+      console.error("Error sending typing notification:", err);
+    });
+
+    // Set timeout to stop showing typing after user stops
+    typingTimeoutRef.current = setTimeout(() => {
+      // Typing stopped
+    }, 1000);
   };
 
   return (
@@ -110,7 +184,9 @@ export default function StudentChat() {
               {chatGroups.map((group, index) => (
                 <div
                   key={index}
-                  className={styles.chatItem}
+                  className={`${styles.chatItem} ${
+                    selectedCourseId === group.groupId ? styles.selectedChat : ""
+                  }`}
                   onClick={() => setSelectedCourseId(group.groupId)}
                 >
                   <div className={styles.chatAvatar}>
@@ -121,7 +197,6 @@ export default function StudentChat() {
                       <p className={styles.chatName}>
                         {group.groupName || "Unknown"}
                       </p>
-          
                     </div>
                     <p className={styles.chatPreview}>
                       {group.lastMessageText || "No messages yet..."}
@@ -145,19 +220,26 @@ export default function StudentChat() {
                       ?.groupName || "Select a chat"}
                   </h2>
                   <p className={styles.chatPreview}>
+                    {typingUsers.length > 0 && (
+                      <span className={styles.typingIndicator}>
+                        {typingUsers.join(", ")} {typingUsers.length === 1 ? "is" : "are"} typing...
+                      </span>
+                    )}
                   </p>
                 </div>
               </div>
             </div>
             <div className={styles.messageArea}>
-              {messages.map((msg) => (
+              {messages.map((msg, index) => (
                 <div
-                  key={`${msg.sendAt}-${msg.senderId}`}
+                  key={`${msg.sendAt}-${msg.senderId}-${index}`}
                   className={msg.senderId === id ? styles.messageSent : styles.messageReceived}
                 >
                   <p>
-                    {msg.senderId !== id && <span className={styles.name}>{msg.senderName}</span>}
-                    <br />
+                    {msg.senderId !== id && (
+                      <span className={styles.name}>{msg.senderName}</span>
+                    )}
+                    {msg.senderId !== id && <br />}
                     {msg.message}
                   </p>
                   <span className={styles.messageTime}>
@@ -171,8 +253,11 @@ export default function StudentChat() {
                 <input
                   type="text"
                   value={input}
-                  onChange={e => setInput(e.target.value)}
-                  onKeyDown={e => e.key === "Enter" && sendMessage()}
+                  onChange={(e) => {
+                    setInput(e.target.value);
+                    handleTyping();
+                  }}
+                  onKeyDown={(e) => e.key === "Enter" && sendMessage()}
                   placeholder="Type a message..."
                   className={styles.messageInput}
                 />

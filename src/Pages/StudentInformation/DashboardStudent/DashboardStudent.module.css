@@ -111,18 +111,20 @@
 
 .notificationBadge {
   position: absolute;
-  top: -8px;
-  right: -8px;
+  top: -5px;
+  right: -5px;
   background-color: #ff4757;
   color: white;
   border-radius: 50%;
   width: 18px;
   height: 18px;
-  font-size: 12px;
+  font-size: 11px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
+  border: 2px solid white;
+  z-index: 1;
 }
 
 .notificationPopup {
@@ -191,9 +193,8 @@
 }
 
 .notificationContent p {
-  margin: 0 0 5px 0;
-  color: #333;
-  font-size: 14px;
+  margin: 5px 0;
+  line-height: 1.4;
 }
 
 .notificationTime {
@@ -222,4 +223,111 @@
   text-align: center;
   color: #888;
   font-size: 14px;
+}
+
+/* New notification system styles */
+.notificationContainer {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  position: relative;
+}
+
+.notificationContainer .notificationIcon {
+  position: relative;
+}
+
+.connectionStatus {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: #666;
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+.statusDot.connected {
+  background-color: #28a745;
+}
+
+.statusDot.connecting {
+  background-color: #ffc107;
+}
+
+.statusDot.reconnecting {
+  background-color: #fd7e14;
+}
+
+.statusDot.disconnected, .statusDot.failed {
+  background-color: #dc3545;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 currentColor;
+  }
+  70% {
+    box-shadow: 0 0 0 5px transparent;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+.statusText {
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.headerActions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.testButton {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.2s;
+}
+
+.testButton:hover {
+  background-color: #218838;
+}
+
+.connectionInfo {
+  font-size: 12px;
+  color: #666;
+  margin-top: 10px;
+  padding: 8px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+}
+
+.notificationType {
+  font-size: 10px;
+  font-weight: bold;
+  color: #007bff;
+  margin-bottom: 5px;
+  padding: 2px 6px;
+  background-color: #e3f2fd;
+  border-radius: 12px;
+  display: inline-block;
+  text-transform: uppercase;
+}
+
+.notificationItem.unread .notificationType {
+  background-color: #fff3cd;
+  color: #856404;
 }
