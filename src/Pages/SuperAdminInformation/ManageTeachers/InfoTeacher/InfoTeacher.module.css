@@ -1,0 +1,19 @@
+
+
+.button {
+     margin: 1rem 2.5rem 0 1rem;
+     width: 281px;
+     height: 42px;
+     border-radius: 30px;
+     font-weight: 500;
+     background-color: #00B0D8;
+     color: white;
+     text-align: center;
+     cursor: pointer;
+     transition: 0.3s ease-in-out;
+     border: none;
+     font-family: Poppins;
+     font-weight: 400;
+     font-size: 21px;
+     letter-spacing: 0%;
+}

@@ -1,0 +1,189 @@
+.SelectUser {
+     width: 1172px;
+     height: 650px;
+     border-radius: 16px;
+     background-color: #FFFFFF;
+     box-shadow: 4px 6px 13px 0px #0000004D;
+}
+
+.TextSelect {
+     font-family: Poppins;
+     font-weight: 700;
+     font-size: 40px;
+     line-height: 100%;
+     letter-spacing: 0%;
+     color: #000000;
+     margin-bottom: 2px;
+}
+
+.line {
+     width: 48px;
+     height: 7px;
+     background: #00B0D8;
+}
+
+.CardSelect {
+     width: 260px;
+     height: 200px;
+     background: #CAF0F8;
+     border-radius: 16px;
+     box-shadow: 4px 6px 13px 0px #0000004D;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+     text-align: center;
+     gap: 8px;
+}
+
+.CardSelect:hover {
+     background-color: #00B4D8;
+}
+
+.CardsSelect {
+     gap: 1.5rem;
+     display: flex;
+     flex-wrap: wrap;
+     justify-content: center;
+     align-items: center;
+     margin-top: 5rem;
+}
+
+.CardSelect p {
+     font-size: 20px;
+     font-weight: 3px;
+     font-family: "Poppins", sans-serif;
+}
+
+.CardSelect:hover p {
+     color: white;
+
+}
+
+/* استهداف الـ icons باستخدام nested selectors */
+.CardSelect i {
+     font-size: 1.8rem;
+}
+
+.CardSelect i.fa-user-tie {
+     font-size: 2.1rem;
+     /* استثناء للـ Teacher */
+}
+
+.CardSelect:hover i {
+     color: white;
+}
+
+/* الـ Media Queries */
+@media (max-width: 1440px) {
+     .SelectUser {
+          height: 808px;
+     }
+
+     .CardsSelect {
+          flex: 1 1 calc(25% - 2rem);
+          margin-top: 7rem;
+     }
+
+     .CardSelect {
+          width: 251px;
+          height: 243px;
+     }
+}
+
+@media (max-width: 1200px) {
+     .SelectUser {
+          width: 90%;
+          height: 800px;
+     }
+
+     .CardsSelect {
+          flex: 1 1 calc(25% - 1.5rem);
+          gap: 1.3rem;
+     }
+
+     .CardSelect {
+          width: 235px;
+          height: 190px;
+          gap: 12px;
+     }
+}
+
+@media (max-width: 992px) {
+     .SelectUser {
+          width: 80%;
+          height: 850px;
+     }
+
+     .CardsSelect {
+          flex: 1 1 calc(50% - 1.5rem);
+          margin-top: 3rem;
+     }
+
+     .CardSelect {
+          height: 200px;
+          max-width: 200px;
+          margin-top: 2.5rem;
+          gap: 3px;
+     }
+}
+
+@media (max-width: 768px) {
+     .SelectUser {
+          width: 80%;
+          height: 850px;
+          margin: 2rem;
+          padding: 1rem;
+          padding-bottom: 3rem;
+     }
+
+     .CardsSelect {
+          flex: 1 1 calc(50%);
+          gap: 2rem;
+          margin-top: 2rem;
+     }
+
+     .CardSelect {
+          height: 200px;
+          max-width: 200px;
+          margin-top: 2.5rem;
+          gap: 3px;
+     }
+}
+
+@media (max-width: 576px) {
+     .SelectUser {
+          width: 95%;
+          padding: 1rem;
+          height: auto;
+          padding-bottom: 3rem;
+     }
+    .TextSelect {
+         font-weight: 600px;
+         font-size: 27px;
+         /* تصغير الخط أكتر */
+         white-space: nowrap;
+         /* منع التكسير لسطر جديد */
+         letter-spacing: -0.5px;
+         /* تقليل المسافة بين الحروف لو محتاج */
+    }
+
+     .CardsSelect {
+          flex-direction: column;
+          align-items: center;
+          gap: 1.3rem;
+          margin-top: 3rem;
+     }
+
+     .CardSelect {
+          width: 70%;
+          max-width: 320px;
+          height: 140px;
+          padding: 0.8rem;
+          margin-top: 0;
+     }
+
+     .CardSelect p {
+          font-size: 1.1rem;
+     }
+}

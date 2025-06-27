@@ -1,0 +1,43 @@
+/* ButtonStyles.module.css */
+.buttonContainer {
+     display: flex;
+     justify-content: center;
+     gap: 1rem;
+     margin-top: 14rem;
+     font-family: Poppins;
+     font-weight: 400;
+     font-size: 20px;
+     line-height: 100%;
+     letter-spacing: 0%;
+
+}
+
+.confirmButton {
+     width: 225px;
+     height: 56px;
+     background-color: #02CE1A;
+     color: white;
+     border: none;
+     border-radius: 46px;
+     cursor: pointer;
+}
+
+.rejectButton {
+     width: 225px;
+     height: 56px;
+     background-color: #CE0202;
+     color: white;
+     border: none;
+     border-radius: 46px;    
+     cursor: pointer;
+}
+
+.defaultButton {
+     width: 225px;
+     height: 56px;
+     background-color: #00B0D8;
+     color: white;
+      border: none;
+     border-radius: 46px;   
+     cursor: pointer; 
+}

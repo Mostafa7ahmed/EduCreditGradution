@@ -1,0 +1,143 @@
+/* الـ Body (هنضيفه في ملف App.css أو index.css عشان يطبق على كل الصفحة) */
+body {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+}
+
+/* الـ Container */
+.container {
+     width: 1460px;
+     height: 700px;
+     display: flex;
+     border-radius: 16px;
+     background-color: #f5f7fa;
+     align-items: center;
+     justify-content: center;
+}
+
+/* الـ Sidebar */
+.sidebar {
+     border-radius: 16px;
+     border-width: 1px;
+     height: 650px;
+     width: 25%;
+     background-color: #ffffff;
+     border: 1px solid #0000004D;
+     padding: 1rem;
+     margin: 1rem 1rem;
+}
+.line{
+     width: 100%;
+     border: 1px solid #0000004D;
+     border-width: 1px;
+     margin-bottom: 1.5rem;
+}
+/* الجزء الأيمن (المحتوى) */
+.content {
+     height: 650px;
+     width: 75%;
+     border-radius: 16px;
+     border-width: 1px; 
+     background-color: #FFFFFF;
+     border: 1px solid #0000004D;
+     margin: 1rem;
+     margin-left: 0;
+     padding-bottom: 1.2rem;
+}
+
+/* باقي الـ Styles بتاعة الـ Sidebar */
+.logo {
+     display: flex;
+     align-items: center;
+     gap: 0.5rem;
+     margin-bottom: 1rem;  
+}
+
+.menuTitle {
+     font-family: Poppins;
+     font-weight: 700;
+     font-size: 16px;
+     line-height: 100%;
+     letter-spacing: 0%;
+     color: #00000080;
+     padding-bottom: 0.5rem;
+}
+.SecondTitle{
+     font-family: Poppins;
+     font-weight: 700;
+     font-size: 16px;
+     line-height: 100%;
+     letter-spacing: 0%;
+     color: #00000080;
+     margin-top: 3.6rem;
+     padding-bottom: 1rem;
+}
+
+.menu li a {
+     display: flex;
+     align-items: center;
+     gap: 0.5rem;
+     padding: 0.5rem;
+     color: #333333;
+     text-decoration: none;
+     border-radius: 8px;
+     transition: background-color 0.3s;
+     padding-bottom: 1rem;
+}
+
+.menu li a:hover {
+     background-color: #E6E6E6;
+     color: #0019BDD9;
+}
+
+.menu li a i {
+     font-size: 1.2rem;
+}
+/* الـ active class لما الـ NavLink يكون مفعّل (الصفحة الحالية) */
+.menu li .active {
+     background-color: #E6E6E6 !important;
+     /* !important عشان نتأكد إن الـ active يتطبق */
+     color: #0019BDD9;
+}
+.menu li a p {
+     font-family: PT Sans;
+     font-weight: 400px;
+     font-size: 16px;
+     line-height: 100%;
+     letter-spacing: 0%;
+}
+
+
+/* Media Query */
+@media (max-width: 1440px) {
+     .container {
+          display: flex;
+          width: 1346px;
+          height: 928px;
+          border-radius: 16px;
+          background-color: #f5f7fa;
+     }
+          .sidebar {
+          width: 304px;
+          height: 870px;
+          }
+          .line {
+          width: 275.00183438547793px;
+          border: 1px solid #0000004D;
+          border-width: 1px;
+          }
+          .content{
+               width: 986px;
+               height: 870px;
+               margin: 0;
+               margin-right: 1rem;
+          }  
+          .SecondTitle{
+               margin-top: 14rem;
+               padding-bottom: 1rem;
+               }
+               .menu li a{
+               padding-bottom: 1.3rem;
+               }
+}

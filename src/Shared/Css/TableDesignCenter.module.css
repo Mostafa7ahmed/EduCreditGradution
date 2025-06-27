@@ -1,0 +1,143 @@
+/* Table */
+.table {
+     width: 100%;
+     border-collapse: separate;
+     /* Changed from collapse to separate so border-radius works correctly */
+     border-spacing: 0;
+     /* No spacing between cells */
+     background-color: #fff;
+     border-radius: 15px;
+     overflow: hidden;
+     /* Add outer border to the table */
+}
+
+.tabeContanier {
+     height: calc(100vh - 320px);
+     overflow: scroll;
+     scrollbar-width: none;
+}
+
+.table th,
+.table td {
+     padding: 18px 16px;
+     text-align: center;
+     /* Center all content in th and td */
+     border: 2px solid #80BBDB;
+}
+
+/* Adjust border-radius for th in the top corners */
+.table thead tr:first-child th:first-child {
+     border-top-left-radius: 15px;
+     /* Top-left corner */
+}
+
+.table thead tr:first-child th:last-child {
+     border-top-right-radius: 15px;
+     /* Top-right corner */
+}
+
+/* Adjust border-radius for td in the bottom corners */
+.table tbody tr:last-child td:first-child {
+     border-bottom-left-radius: 15px;
+     /* Bottom-left corner */
+}
+
+.table tbody tr:last-child td:last-child {
+     border-bottom-right-radius: 15px;
+     /* Bottom-right corner */
+}
+
+/* Remove extra borders between cells to avoid overlap with border-radius */
+.table th,
+.table td {
+     border-right: none;
+     /* Remove right borders */
+     border-bottom: none;
+     /* Remove bottom borders */
+}
+
+/* First column (#) background */
+.table td:nth-child(1) {
+     background-color: #D0F0FF;
+}
+
+/* Restore right border for the last column */
+.table th:last-child,
+.table td:last-child {
+     border-right: 2px solid #80BBDB;
+     text-align: center;
+     /* Ensure centering */
+}
+
+/* Restore bottom border for the last row */
+.table tbody tr:last-child td {
+     border-bottom: 2px solid #80BBDB;
+}
+
+.table th {
+     background-color: #ACE0F9;
+     color: #000000;
+     text-align: center;
+     /* Center header text */
+}
+
+.table td {
+     color: #000000;
+     text-align: center;
+     /* Center all cell text */
+}
+
+/* Action Buttons */
+.editButton,
+.deleteButton,
+.infoButton {
+     cursor: pointer;
+}
+
+.editButton {
+     color: #000000;
+     margin-right: 15px;
+}
+
+.editButton:hover {
+     color: #FFBB00;
+}
+
+.deleteButton i {
+     color: #000000;
+}
+
+.deleteButton i:hover {
+     color: #FF0000;
+}
+
+.infoButton {
+     margin-right: 15px;
+}
+
+.infoButton:hover {
+     color: #008CFF;
+}
+
+.actionButtons {
+     align-items: center;
+     justify-content: center;
+     display: flex;
+}
+.Plus {
+     background-color: #09BC00;
+     border: none;
+     border-radius: 50%;
+     width: 30px;
+     height: 30px;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     cursor: pointer;
+}
+
+.Plus i {
+     color: white;
+     font-size: 14px;
+
+}

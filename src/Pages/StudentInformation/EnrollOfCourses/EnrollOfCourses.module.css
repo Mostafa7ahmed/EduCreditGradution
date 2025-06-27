@@ -1,0 +1,184 @@
+.studentInfoContainer {
+     padding: 1rem 1.5rem;
+}
+
+.infoList {
+     list-style-type: disc;
+     color: #0077b6;
+     padding-left: 20px;
+}
+
+.infoContainer {
+     display: flex;
+     justify-content: space-between;
+     width: 100%;
+}
+
+.leftColumn,
+.rightColumn {
+     flex: 1;
+}
+
+.infoList li {
+     margin-bottom: 0.8rem;
+     font-size: 18px;
+     line-height: 1.2;
+     display: flex;
+     align-items: center;
+}
+
+.label {
+     font-weight: bold;
+     color: #0077b6;
+     font-family: Poppins;
+     font-weight: 700;
+     font-size: 16px;
+     line-height: 100%;
+     letter-spacing: 0%;
+     display: inline-block;
+     width: 150px;
+     margin-right: 0;
+}
+
+.line {
+     width: 100%;
+     border-width: 1px;
+     border: 1px solid #0000004D;
+     margin-bottom: 2rem;
+}
+
+.data {
+     font-family: Poppins;
+     font-size: 16px;
+     line-height: 100%;
+     letter-spacing: 0%;
+     color: #00000099;
+     display: inline-block;
+     width: 400px;
+     overflow: visible;
+}
+
+.coursetitle {
+     font-family: Poppins;
+     font-weight: 700;
+     font-size: 16px;
+     letter-spacing: 0%;
+     line-height: 100%;
+     margin-top: -1rem;
+     margin-bottom: 1rem;
+}
+
+.Plus {
+     background-color: #09BC00;
+     border: none;
+     border-radius: 50%;
+     width: 30px;
+     height: 30px;
+     cursor: pointer;
+}
+
+.Plus i {
+     color: white;
+     font-size: 14px;
+}
+
+.xmark {
+     background-color: #BC0000;
+     border: none;
+     border-radius: 50%;
+     width: 30px;
+     height: 30px;
+     cursor: pointer;
+}
+
+.xmark i {
+     color: white;
+     font-size: 14px;
+}
+
+.EnrollTitle {
+     font-family: Poppins;
+     font-weight: 700;
+     font-size: 16px;
+     letter-spacing: 0%;
+     line-height: 100%;
+     margin-bottom: 1rem;
+     margin-top: 1.5rem;
+}
+
+.scrollableCourseWrapper {
+     max-height: 150px;
+     overflow-y: auto;
+}
+
+.scrollableTableWrapper {
+     max-height: 190px;
+     overflow-y: auto;
+}
+
+.button {
+     position: fixed;
+     bottom: 4rem;
+     right: 5rem;
+     width: 38px;
+     height: 36px;
+     border-radius: 46px;
+     background-color: white;
+     color: #00B0D8;
+     text-align: center;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     font-family: Poppins;
+     font-weight: 400;
+     font-size: 24px;
+     letter-spacing: 0%;
+     cursor: pointer;
+     border: 1px solid #0077B6;
+}
+
+.button button {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     background: none;
+     border: none;
+     color: #00B0D8;
+     font-family: Poppins;
+     font-size: 24px;
+     cursor: pointer;
+}
+
+.saveText {
+     position: fixed;
+     bottom: 4.5rem;
+     right: 8rem;
+     color: black;
+     font-family: Poppins;
+     font-weight: 700;
+     font-size: 16px;
+     line-height: 100%;
+     letter-spacing: 0%;
+}
+
+.enrollTable th {
+     background-color: #0077B6;
+     color: #ffffff;
+     text-align: center;
+}
+
+.enrollCourse {
+     background-color: #0077b6;
+}
+
+/* New class for styling enrolled course cells */
+.enrolledCourseCell {
+     background-color: #4CAAD1;
+     color: white !important;
+     text-align: center;
+     font-family: Poppins;
+     font-weight: 500;
+     font-size: 20px;
+     line-height: 100%;
+     letter-spacing: 0%;
+}

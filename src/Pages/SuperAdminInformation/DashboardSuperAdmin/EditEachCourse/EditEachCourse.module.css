@@ -1,0 +1,26 @@
+.text {
+     font-weight: bold;
+     white-space: nowrap;
+}
+
+.line {
+     background-color: black;
+     width: 75px;
+     height: 5px;
+     margin-top: -13px;
+     border-radius: 5px;
+     margin-bottom: 1.5rem;
+}
+.title{
+     height: 50px;
+     font-family: Poppins;
+     font-weight: 700px;
+     font-size: 36px;
+     line-height: 100%;
+     letter-spacing: 0%;
+          
+}
+.Data{
+     font-weight: bold;
+
+}

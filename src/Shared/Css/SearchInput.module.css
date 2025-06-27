@@ -1,0 +1,37 @@
+
+.searchWrapper {
+     position: relative;
+     width: 100%;
+     background-color: #DCDCDCB2;
+     padding: 1rem;
+}
+
+.searchWrapper i {
+     width: 19.521141052246094px;
+     height: 19.521141052246094px;
+     position: absolute;
+     left: 27px;
+     top: 50%;
+     transform: translateY(-50%);
+     color: #000000;
+     font-size: 19px;
+}
+
+.searchInput {
+     width: 100%;
+     padding: 15px 15px 14px 40px;
+     /* زيادة padding-left من 35px لـ 50px */
+     border: 1px solid #ddd;
+     border-radius: 32px;
+     font-size: 14px;
+     background-color: #FFFFFF;
+}
+
+.searchInput::placeholder {
+     color: #000000;
+     font-family: PT Sans;
+     font-weight: 400px;
+     font-size: 24px;
+     line-height: 100%;
+     letter-spacing: 0%;
+}

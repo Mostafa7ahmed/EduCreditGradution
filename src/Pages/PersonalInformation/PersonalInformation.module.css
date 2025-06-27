@@ -1,0 +1,62 @@
+.personalInfoContainer {
+     height: 100%;
+     box-sizing: border-box;
+     padding: 1.3rem;
+}
+
+.welcomeTitle {
+     font-family: Poppins;
+     font-weight: 400px;
+     font-size: 24px;
+     line-height: 100%;
+     letter-spacing: 0%;
+     color: #000000B2;
+}
+
+.line {
+     width: 100%;
+     border-width: 1px;
+     border: 1px solid #0000004D;
+     margin-top: 1.2rem;
+     margin-bottom: 2rem;
+}
+.row {
+     margin-top: 1rem;
+     display: flex;
+     gap: 1rem;
+     align-items: center;
+     /* يضمن أن جميع العناصر تكون في نفس الخط */
+}
+
+.Lable {
+     color: #000000B2;
+     width: 25%;
+     background-color: #ACE0F9;
+     border: 1px solid #6BBBFFE5;
+     border-radius: 16px;
+     padding: 1rem;
+     font-family: Poppins;
+     font-weight: bold;
+     font-size: 16px;
+     line-height: 100%;
+     /* يجعل النص في المنتصف */
+}
+
+.data {
+     flex-grow: 1;
+     /* يجعل العنصر الأيمن يأخذ المساحة المتاحة */
+     background-color: #D0F0FF;
+     border: 1px solid #6BBBFFE5;
+     border-radius: 16px;
+     padding: 1rem;
+     font-family: Poppins;
+     font-weight: 400;
+     font-size: 16px;
+     line-height: 100%;
+     color: #000000B2;
+}
+@media (max-width:1440px) {
+     .line {
+          width: 932px;
+     }
+}

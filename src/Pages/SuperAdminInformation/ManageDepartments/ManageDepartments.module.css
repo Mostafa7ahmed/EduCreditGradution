@@ -1,0 +1,84 @@
+.container {
+     font-family: Poppins;
+     font-weight: 400;
+     font-size: 20px;
+     line-height: 100%;
+     letter-spacing: 0%;
+     padding: 1rem;
+}
+
+/* Pagination */
+.pagination {
+     display: flex;
+     justify-content: center;
+     /* توسيط المحتوى كله */
+     align-items: center;
+     gap: 10px;
+     /* مسافة صغيرة بين العناصر */
+}
+
+.pageButton {
+     cursor: pointer;
+     font-size: 14px;
+     color: #1E1E1E;
+     /* نفس لون الأرقام عشان يكونوا متسقين */
+}
+
+.pageButton:disabled {
+     color: #999;
+     cursor: not-allowed;
+}
+
+.pageNumbers {
+     gap: 7px;
+}
+
+.pageNumber {
+     padding: 4px 11px;
+     border: none;
+     background: none;
+     color: #1E1E1E;
+     cursor: pointer;
+     font-size: 14px;
+}
+
+.pageNumber:disabled {
+     color: #999;
+     cursor: not-allowed;
+}
+
+.activePage {
+     background-color: #0077B6;
+     color: #fff;
+     border-radius: 7px;
+}
+
+@media (max-width: 1440px) {
+  
+
+     .table {
+          width: 948px;
+          height: 606px;
+     }
+
+     /* ضبط ارتفاع الـ thead */
+     .table thead {
+          height: 60px;
+          /* ارتفاع الـ thead */
+     }
+
+     /* ضبط ارتفاع الـ tbody */
+     .table tbody {
+          height: 546px;
+          /* 606px - 60px (ارتفاع الـ thead) */
+     }
+
+     /* ضبط ارتفاع كل صف في الـ tbody */
+     .table tbody tr {
+          height: 91px;
+          /* 546px / 6 = 91px لكل صف */
+     }
+
+     .pagination {
+     }
+}

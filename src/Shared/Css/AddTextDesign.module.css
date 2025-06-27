@@ -1,0 +1,17 @@
+.text{
+     font-weight: bold;
+}
+.line{
+     background-color: black;
+     width: 75px;
+     height: 5px;
+     margin-top: -13px;
+     border-radius: 5px;
+     margin-bottom: 1.5rem;
+}
+@media (max-width:1440px) {
+     .line{
+          margin-bottom: 2.5rem;
+     }
+     
+}

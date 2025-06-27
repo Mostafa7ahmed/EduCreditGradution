@@ -1,0 +1,177 @@
+.personalInfoContainer {
+     height: 100%;
+     box-sizing: border-box;
+     padding: 1rem;
+     /* تقليص الحشو */
+}
+
+.welcomeTitle {
+     font-family: Poppins;
+     font-weight: 400;
+     font-size: 20px;
+     /* تقليص حجم الخط */
+     line-height: 100%;
+     letter-spacing: 0%;
+     color: #000000B2;
+}
+
+.row {
+     margin-top: 0.8rem;
+     display: flex;
+     gap: 0.8rem;
+     /* تقليص الفجوة بين العناصر */
+     align-items: center;
+}
+
+.Lable {
+     color: #000000B2;
+     width: 18%;
+     /* تقليص العرض إلى 18% */
+     background-color: #ACE0F9;
+     border: 1px solid #6BBBFFE5;
+     border-radius: 12px;
+     /* تقليص الزوايا */
+     padding: 0.6rem;
+     /* تقليص الحشو */
+     font-family: Poppins;
+     font-weight: bold;
+     font-size: 15px;
+     /* تقليص حجم الخط */
+     line-height: 100%;
+}
+
+.data {
+     flex-grow: 1;
+     background-color: #D0F0FF;
+     border: 1px solid #6BBBFFE5;
+     border-radius: 12px;
+     /* تقليص الزوايا */
+     padding: 0.6rem;
+     /* تقليص الحشو */
+     font-family: Poppins;
+     font-weight: 400;
+     font-size: 15px;
+     /* تقليص حجم الخط */
+     line-height: 100%;
+     color: #000000B2;
+}
+
+.button {
+margin: 1rem 2.5rem 0 1rem;
+     /* مسافة جانبية لكل زر */     /* توفير تباعد عن العناصر التي فوقها */
+     width: 281px;
+     /* تعديل العرض */
+     height: 42px;
+     /* تعديل الارتفاع */
+     border-radius: 30px;
+     /* تعديل الزوايا */
+     font-weight: 500;
+     /* تعديل سمك الخط */
+     background-color: #00B0D8;
+     color: white;
+     text-align: center;
+     /* جعل النص في المنتصف */
+     align-items: center;
+     justify-content: center;
+     cursor: pointer;
+     transition: 0.3s ease-in-out;
+     /* تحسين تأثير الحركة */
+     border: none;
+     font-family: Poppins;
+     font-weight: 400;
+     font-size: 21px;
+     letter-spacing: 0%;
+}
+
+
+@media (max-width: 1440px) {
+     .line {
+          width: 900px;
+          /* تقليص العرض في الأجهزة ذات الشاشات الكبيرة */
+     }
+}
+
+@media (max-width: 1440px) {
+     .personalInfoContainer {
+               height: 100%;
+               box-sizing: border-box;
+               padding: 1.3rem;
+          }
+     
+          .welcomeTitle {
+          font-family: Poppins;
+               font-weight: 500;
+               font-size: 32px;
+               line-height: 100%;
+               letter-spacing: 0%;
+               color: #000000B2;
+          }
+     
+     
+          .row {
+               margin-top: 1rem;
+               display: flex;
+               gap: 1rem;
+               align-items: center;
+               /* يضمن أن جميع العناصر تكون في نفس الخط */
+          }
+     
+          .Lable {
+               color: #000000B2;
+               width: 25%;
+               background-color: #ACE0F9;
+               border: 1px solid #6BBBFFE5;
+               border-radius: 16px;
+               padding: 1rem;
+               font-family: Poppins;
+               font-weight: bold;
+               font-size: 16px;
+               line-height: 100%;
+               /* يجعل النص في المنتصف */
+          }
+     
+          .data {
+               flex-grow: 1;
+               /* يجعل العنصر الأيمن يأخذ المساحة المتاحة */
+               background-color: #D0F0FF;
+               border: 1px solid #6BBBFFE5;
+               border-radius: 16px;
+               padding: 1rem;
+               font-family: Poppins;
+               font-weight: 400;
+               font-size: 16px;
+               line-height: 100%;
+               color: #000000B2;
+          }
+                    .button-container {
+                         display: flex;
+                         justify-content: center;
+                    }
+          
+                    .button {
+                         margin: 1rem 2.5rem 0 1rem;
+                         width: 260px;
+                         /* تعديل العرض */
+                         height: 56px;
+                         /* تعديل الارتفاع */
+                         border-radius: 30px;
+                         /* تعديل الزوايا */
+                         font-weight: 500;
+                         /* تعديل سمك الخط */
+                         background-color: #00B0D8;
+                         color: white;
+                         text-align: center;
+                         /* جعل النص في المنتصف */
+                         align-items: center;
+                         justify-content: center;
+                         cursor: pointer;
+                         transition: 0.3s ease-in-out;
+                         /* تحسين تأثير الحركة */
+                         border: none;
+                         font-family: Poppins;
+                         font-weight: 400;
+                         font-size: 21px;
+                         letter-spacing: 0%;
+                    }
+     
+}

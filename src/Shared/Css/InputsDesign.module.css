@@ -1,0 +1,106 @@
+.container {
+     padding: 1.3rem;
+}
+
+.text {
+     width: 450px;
+     height: 50px;
+     font-family: Poppins;
+     font-weight: 700px;
+     font-size: 36px;
+     line-height: 100%;
+     letter-spacing: 0%;
+}
+
+.inputContainer {
+     display: flex;
+     flex-direction: column;
+     gap: 6px;
+     width: 100%;
+     margin-bottom: 0.8rem;
+}
+
+.inputContainer label {
+     font-family: Poppins;
+     font-weight: 500px;
+     font-size: 20px;
+     line-height: 100%;
+     letter-spacing: 0%;
+}
+
+.inputContainer input,
+.inputContainer select {
+     width: 100%;
+     height: 43px;
+     /* إضافة ارتفاع ثابت عشان كل الـ inputs يبقوا بنفس الطول */
+     padding: 10px 15px;
+     border: 2px solid #00B0D8;
+     border-radius: 9px;
+     background-color: #FFFFFF;
+     font-family: 'PT Sans', sans-serif;
+     font-size: 14px;
+     color: #000000;
+     box-sizing: border-box;
+     /* عشان الـ padding و الـ border ما يزودوش الارتفاع أو العرض */
+}
+
+.inputContainer select {
+     -webkit-appearance: none;
+     -moz-appearance: none;
+     appearance: none;
+     background-image: url("data:image/svg+xml;utf8,<svg fill='gray' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+     background-repeat: no-repeat;
+     background-position: right 15px center;
+}
+
+.options {
+     font-family: Poppins;
+     font-weight: 500;
+     font-size: 18px;
+     line-height: 100%;
+     letter-spacing: 0%;
+}
+
+.inputContainer input:focus,
+.inputContainer select:focus {
+     border-color: #00B0D8;
+}
+
+/* كلاس جديد للحقلين جمب بعض */
+.inputRow {
+     display: flex;
+     justify-content: space-between;
+     gap: 7rem;
+     width: 100%;
+}
+
+/* الـ inputContainer داخل الـ inputRow */
+.inputRow .inputContainer {
+     flex: 1;
+}
+
+/* تصميم الـ placeholder للـ input[type="date"] */
+.inputContainer input[type="date"]::-webkit-datetime-edit-text,
+.inputContainer input[type="date"]::-webkit-datetime-edit-month-field,
+.inputContainer input[type="date"]::-webkit-datetime-edit-day-field,
+.inputContainer input[type="date"]::-webkit-datetime-edit-year-field {
+     color: #999999;
+}
+
+.error{
+     color: red;
+}
+
+@media (max-width: 1440px) {
+     .inputContainer {
+          margin-bottom: 2rem;
+     }
+          .inputContainer input,
+          .inputContainer select {
+               width: 100%;
+               height: 56px;
+               /* إضافة ارتفاع ثابت عشان كل الـ inputs يبقوا بنفس الطول */
+               padding: 10px 15px;
+          }
+
+}

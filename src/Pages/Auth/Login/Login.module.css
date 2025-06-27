@@ -1,0 +1,341 @@
+.Card{
+     width: 1172px;
+     height: 650px;
+     border-radius: 16px;
+     background-color: #FFFFFF;
+     box-shadow: 4px 6px 13px 0px #0000004D;
+     display: flex;
+     margin: 2rem;
+}
+/*.Card {
+     width: 1172px;
+     height: 650px;
+     border-radius: 16px;
+     background-color: #FFFFFF;
+     box-shadow: 4px 6px 13px 0px #0000004D;
+     display: flex;
+}*/
+
+/* الجزء الأيسر */
+.LeftSection {
+     flex: 1;
+     position: relative;
+     height: 100%;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+}
+
+.Image {
+     width: 100%;
+     height: 100%;
+     object-fit: fill;
+     padding: 12px;
+     z-index: 1;
+}
+
+/* الجزء الأيمن */
+.RightSection {
+     flex: 1;
+     height: 100%;
+     /* ياخد الارتفاع كله */
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     margin-top: 25px;
+}
+.Logo {
+
+     margin-bottom: 1rem;
+}
+
+.Title {
+     font-family: Secular One;
+     font-weight: 400px;
+     font-size: 45px;
+     line-height: 100%;
+     letter-spacing: 0%;
+}
+
+.Subtitle {
+     font-family: Schibsted Grotesk;
+     font-weight: 400;
+     font-size: 18px;
+     line-height: 100%;
+     letter-spacing: 0%;
+     margin-top: 0.5rem;
+     margin-bottom: 1.5rem;
+}
+
+.Form {
+     width: 100%;
+     max-width: 500px;
+}
+
+.InputGroup {
+     margin-bottom: 1rem;
+}
+
+.InputGroup label {
+     display: block;
+     font-family: Poppins;
+     font-weight: 400px;
+     font-size: 20px;
+     line-height: 100%;
+     letter-spacing: 0%;
+     margin-bottom: 0.5rem;
+}
+
+.InputWrapper {
+     position: relative;
+     display: flex;
+     align-items: center;
+     border: 1px solid #00B0D8;
+     border-radius: 25px;
+     padding: 0.8rem 1rem;
+     
+}
+
+.InputWrapper i {
+     color: #00000099;
+     margin-right: 0.5rem;
+}
+
+.Input {
+     border: none;
+     outline: none;
+     width: 100%;
+     font-size: 0.9rem;
+     color: #666666;
+}
+
+.Options {
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     margin-bottom: 1.5rem;
+     font-size: 0.9rem;
+}
+
+.RememberMe {
+     display: flex;
+     align-items: center;
+     font-family: Poppins;
+     font-weight: 400px;
+     font-size: 20px;
+     line-height: 100%;
+     letter-spacing: 0%;
+     color: #00000099;
+}
+
+.RememberMe input {
+     width: 18px;
+     height: 18px;
+     border-width: 1px;
+     margin-right: 0.2rem;
+}
+
+.ForgotPassword {
+color: #00b0d8;
+font-family: Poppins;
+     font-weight: 400px;
+     font-size: 20px;
+     line-height: 100%;
+     letter-spacing: 0%;
+     text-decoration: none;
+     color: #000000;
+}
+.ForgotPassword:hover{
+     color: #000000;
+     text-decoration: underline;
+}
+
+.LoginButton {
+     margin-top: 1rem;
+     width: 100%;
+     padding: 0.8rem;
+     background-color: #00B0D8;
+     color: #ffffff;
+     border: none;
+     border-radius: 25px;
+     cursor: pointer;
+     margin-bottom: 1rem;
+     font-family: Poppins;
+     font-weight: 400px;
+     font-size: 30px;
+     line-height: 100%;
+     letter-spacing: 0%;
+}
+
+.LoginButton:hover {
+     background-color: #0098b8;
+}
+
+.BackButton {
+     width: 100%;
+     padding: 0.8rem;
+     background-color: transparent;
+     color: #00b0d8;
+     border: 1px solid #00B0D8;
+     border-radius: 25px;
+     font-family: Poppins;
+     font-weight: 400px;
+     font-size: 30px;
+     line-height: 100%;
+     letter-spacing: 0%;
+     cursor: pointer;
+}
+
+.BackButton:hover {
+     background-color: #e0f7fa;
+}
+.BackButton:hover {
+     background-color: #00B0D8;
+     color: white;
+}
+@media (max-width: 1440px) {
+     .Card{
+          height: 808px;
+     }
+     .Logo{
+          margin-bottom: 2rem;
+     }
+     .Title{
+          margin-bottom: 0.5rem;
+     }
+     .Image{
+          padding: 15px;
+     }
+     .Subtitle{
+          margin-bottom: 2rem;
+     }
+     .InputGroup{
+          margin-top: 2rem;
+     }
+     .InputGroup lable{
+          font-size: 28px;
+     }
+     .LoginButton{
+          margin-top: 2rem;
+     }
+     .BackButton{
+          margin-top: 0.8rem;
+     }
+    
+}
+
+@media (max-width: 1200px) {
+    
+          .Card {
+                  width: 100%;
+                  height: auto;
+                  flex-direction: column;
+                    }
+          
+                    .LeftSection {
+                    display: none;
+                    /* إخفاء الجزء الأيسر */
+                    }
+          
+                    .RightSection {
+                    width: 100%;
+                    height: auto;
+                    /* عشان ياخد الارتفاع حسب المحتوى */
+                    padding: 1.5rem;
+                    }
+          
+                    .Form {
+                    max-width: 100%;
+                    }
+}
+@media (max-width: 850px) {
+     .Card {
+               width: 90%;
+               height: auto;
+               flex-direction: column;
+          }
+     
+          .LeftSection {
+               display: none;
+               /* إخفاء الجزء الأيسر */
+          }
+     
+          .RightSection {
+               width: 100%;
+               height: auto;
+               /* عشان ياخد الارتفاع حسب المحتوى */
+               padding: 1.5rem;
+          }
+     
+          .Form {
+               max-width: 100%;
+          }
+}
+/* Media Query للشاشات الصغيرة */
+@media (max-width: 576px) {
+     .Card {
+          width: 95%;
+          max-width: auto;
+          height: auto;
+          flex-direction: column;
+          margin: 2rem;
+     }
+     .Title{
+          font-weight: 400px;
+          font-size: 30px;
+          text-align: center;
+     }
+     .Subtitle{
+          text-align: center;
+          margin-bottom: 0.5rem;
+          margin-top: 0.1rem;
+     }
+
+     .RememberMe{
+      font-size: 18px;
+      white-space: nowrap;
+     }
+     .ForgotPassword{
+          font-size: 18px;
+          white-space: nowrap;
+
+     }
+     .BackButton{
+          margin-top: 0.3rem;
+     }
+
+     .LeftSection {
+          display: none;
+          /* إخفاء الجزء الأيسر */
+     }
+     .Options{
+          gap: 1rem;
+     }
+
+     .RightSection {
+          width: 100%;
+          height: auto;
+          /* عشان ياخد الارتفاع حسب المحتوى */
+          padding: 1.5rem;
+     }
+
+     .Form {
+          max-width: 100%;
+     }
+}
+@media (max-width: 360px) {
+     .RememberMe {
+          font-size: 14px;
+          /* تصغير الخط */
+     }
+
+     .ForgotPassword {
+          font-size: 14px;
+          /* تصغير الخط */
+     }
+
+     .Options {
+          gap: 0.5rem;
+          /* تقليل المسافة بين العناصر */
+     }
+}

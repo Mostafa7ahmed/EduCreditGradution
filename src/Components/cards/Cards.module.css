@@ -1,0 +1,93 @@
+.cardsContainer {
+     display: flex;
+     justify-content: center;
+     gap: 20px;
+     flex-wrap: wrap;
+}
+
+.card {
+     border-radius: 16px;
+     width: 230px;
+     height: 112px;
+     display: flex;
+     flex-direction: row;
+     justify-content: space-between;
+     align-items: center;
+     padding: 20px;
+}
+
+/* ألوان الخلفية لكل كارد */
+.cardBg1 {
+     background-color: #CAF0F8;
+     /* سماوي فاتح لـ Departments */
+}
+
+.cardBg2 {
+     background-color: #5C98A59E;
+     /* أخضر فاتح لـ Students */
+}
+
+.cardBg3 {
+     background-color: #52BDB1D9;
+     /* أخضر غامق لـ Teachers */
+}
+
+.cardBg4 {
+     background-color: #80BBDBCC;
+     /* أزرق فاتح لـ Success Rate */
+}
+
+.cardLeft {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+}
+
+.cardRight {
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: center;
+}
+
+.iconCircle {
+     width: 50px;
+     height: 50px;
+     border-radius: 50%;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+}
+
+.iconCircle i {
+     color: black;
+     font-size: 24px;
+}
+
+.circle1 {
+     background-color: #0077B647;
+}
+
+.circle2 {
+     background-color: #DAEFF3;
+}
+
+.circle3 {
+     background-color: #D4FFF294;
+}
+
+.circle4 {
+     background-color: #D4E2FF;
+}
+
+.number {
+     font-size: 20px;
+     font-weight: bold;
+     color: #333;
+     margin-top: 3px;
+}
+
+.description {
+     font-size: 18px;
+     color: #000000CC;
+}

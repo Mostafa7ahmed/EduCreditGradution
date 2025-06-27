@@ -1,0 +1,45 @@
+.studentInfoContainer {
+     padding: 1rem 1.5rem;
+}
+
+.infoList {
+     list-style-type: disc;
+     /* Keep native bullet points */
+     color: #0077B6;
+     padding-left: 20px;
+     /* Space for the bullet points */
+}
+
+.infoList li {
+     margin-bottom: 8px;
+     font-size: 18px;
+     line-height: 1.5;
+}
+
+.label {
+     font-weight: bold;
+     color: #0077B6;
+     font-family: Poppins;
+     font-weight: 700;
+     font-size: 16px;
+     line-height: 100%;
+     letter-spacing: 0%;
+     display: inline-block;
+     /* Use inline-block for alignment */
+     width: 120px;
+     /* Fixed width to align data consistently */
+     margin-right: 10px;
+     /* Gap between label and data */
+     width: 150px;
+}
+
+.data {
+     font-family: Poppins;
+     font-size: 16px;
+     line-height: 100%;
+     letter-spacing: 0%;
+     color: #00000099;
+     display: inline-block;
+     
+     /* Ensure data stays inline */
+}

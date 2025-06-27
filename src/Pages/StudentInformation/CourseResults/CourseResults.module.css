@@ -1,0 +1,28 @@
+.coursetitle {
+     font-family: Poppins;
+     font-weight: 700;
+     font-size: 22px;
+     line-height: 100%;
+     letter-spacing: 0%;
+     margin-top: -1rem;
+     margin-bottom: 1rem;
+}
+.footerInfo {
+     display: flex;
+     justify-content: space-between;
+     margin-top: 15px;
+     gap: 10px;
+}
+
+.footerItem {
+     color: #0077B6;
+     padding: 8px 15px;
+     border-radius: 5px;
+     font-size: 14px;
+     font-weight: 700;
+     flex: 1;
+     font-family: Poppins;
+     font-size: 17px;
+     line-height: 100%;
+     letter-spacing: 0%;
+}

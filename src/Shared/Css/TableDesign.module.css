@@ -1,0 +1,131 @@
+/* Table */
+.table {
+     width: 100%;
+     border-collapse: separate;
+     /* هنغير من collapse لـ separate عشان الـ border-radius يشتغل صح */
+     border-spacing: 0;
+     /* عشان ما يبقاش فيه مسافات بين الخلايا */
+     background-color: #fff;
+     border-radius: 15px;
+     overflow: hidden;
+     /* إضافة border خارجي للـ table */
+}
+
+.tabeContanier{
+     height:calc(100vh - 320px) ;
+     overflow: scroll;
+     scrollbar-width: none;
+}
+.table th,
+.table td {
+     padding: 18px 16px;
+     text-align: left;
+     border: 2px solid #80BBDB;
+}
+
+/* ضبط border-radius للـ th في الزوايا */
+.table thead tr:first-child th:first-child {
+     border-top-left-radius: 15px;
+     /* الزاوية العلوية اليسرى */
+}
+
+.table thead tr:first-child th:last-child {
+     border-top-right-radius: 15px;
+     /* الزاوية العلوية اليمنى */
+}
+
+/* ضبط border-radius للـ td في الزوايا السفلية */
+.table tbody tr:last-child td:first-child {
+     border-bottom-left-radius: 15px;
+     /* الزاوية السفلية اليسرى */
+}
+
+.table tbody tr:last-child td:last-child {
+     border-bottom-right-radius: 15px;
+     /* الزاوية السفلية اليمنى */
+}
+
+/* إزالة الحدود الزيادة بين الخلايا عشان ما تظهرش خارج الـ border-radius */
+.table th,
+.table td {
+     border-right: none;
+     /* إزالة الحدود اليمنى */
+     border-bottom: none;
+     /* إزالة الحدود السفلية */
+}
+
+/* توسيط النص في العمود الأول (#) */
+.table th:first-child,
+.table td:first-child {
+     text-align: center;
+}
+
+/* توسيط النص في العمود الثالث (Department Head) */
+.table th:nth-child(3),
+.table td:nth-child(3) {
+     text-align: center;
+}
+
+.table td:nth-child(1) {
+     background-color: #D0F0FF;
+}
+
+.table th:last-child,
+.table td:last-child {
+     border-right: 2px solid #80BBDB;
+     text-align: center;
+     /* إعادة الحدود اليمنى لآخر عمود */
+}
+
+.table tbody tr:last-child td {
+     border-bottom: 2px solid #80BBDB;
+     /* إعادة الحدود السفلية لآخر صف */
+}
+
+.table th {
+     background-color: #ACE0F9;
+     color: #000000;
+     text-align: center;
+}
+
+.table td {
+     color: #000000;
+}
+
+/* Action Buttons */
+.editButton,
+.deleteButton, .infoButton {
+     cursor: pointer;
+}
+
+.editButton {
+     color: #000000;
+     margin-right: 15px;
+}
+
+.editButton:hover {
+     color: #FFBB00;
+}
+
+
+.deleteButton i {
+     color: #000000;
+     
+}
+
+.deleteButton i:hover {
+     color: #FF0000;
+}
+.infoButton{
+     margin-right: 15px;
+}
+.infoButton:hover{
+     color: #008CFF;
+}
+.actionButtons{
+     align-items: center;
+     justify-content: center;
+     display: flex;
+     gap: 20px;
+          /* المسافة بين الأزرار */
+}

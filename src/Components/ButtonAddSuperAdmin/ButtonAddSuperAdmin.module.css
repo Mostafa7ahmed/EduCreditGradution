@@ -1,0 +1,35 @@
+.addButton {
+     display: flex;
+     width: 35%;
+     padding: 10px 5px;
+     background-color: #CAF0F8;
+     color: #000000;
+     border-radius: 46px;
+     font-size: 14px;
+     cursor: pointer;
+     margin-bottom: 1.6rem;
+     gap: 9.5rem;
+     padding-left: 15px;
+     justify-content: space-between;
+     padding-right: 15px;
+}
+
+.addButton i {
+     border: 2px solid black;
+     color: #000000CC;
+     border-radius: 50%;
+     width: 20px;
+     height: 20px;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     font-size: 12px;
+}
+@media (max-width: 1440px) {
+     .addButton {
+               margin-bottom: 2rem;
+               width: 38%;
+               gap: 10rem;
+          }
+     
+}

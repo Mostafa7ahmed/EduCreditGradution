@@ -1,0 +1,44 @@
+/* Pagination */
+.pagination {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     gap: 10px;
+
+}
+
+.pageButton {
+     cursor: pointer;
+     font-size: 14px;
+     color: #1E1E1E;
+     /* نفس لون الأرقام عشان يكونوا متسقين */
+}
+
+.pageButton:disabled {
+     color: #999;
+     cursor: not-allowed;
+}
+
+.pageNumbers {
+     gap: 7px;
+}
+
+.pageNumber {
+     padding: 4px 11px;
+     border: none;
+     background: none;
+     color: #1E1E1E;
+     cursor: pointer;
+     font-size: 14px;
+}
+
+.pageNumber:disabled {
+     color: #999;
+     cursor: not-allowed;
+}
+
+.activePage {
+     background-color: #0077B6;
+     color: #fff;
+     border-radius: 7px;
+}
