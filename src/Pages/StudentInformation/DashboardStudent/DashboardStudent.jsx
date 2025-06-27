@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
-import * as signalR from "@microsoft/signalr";
 import SearchNotification from "../../../Shared/Css/SearchInputNotification.module.css";
 import styles from "./DashboardStudent.module.css";
 import Information from "../../../../src/Shared/Css/InfoAndInformation.module.css";
@@ -10,6 +9,7 @@ import axios from "axios";
 import { baseUrl } from "../../../Env/Env";
 import { authContext } from "../../../Context/AuthContextProvider";
 import { Link } from "react-router-dom";
+import { useNotificationService } from "../../../Service/NotificationService";
 
 export default function DashboardStudent() {
   const [studentData, setStudentData] = useState(null); // State for detailed student data
@@ -19,132 +19,36 @@ export default function DashboardStudent() {
   const [allCourses, setAllCourses] = useState([]); // State for enrolled courses
   const [semesterId, setSemesterId] = useState(""); // State for current semester ID
   const [currentPage, setCurrentPage] = useState(1); // State for pagination
-  const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
-  const [connectionStatus, setConnectionStatus] = useState("Disconnected");
   const pageSize = 3; // Same page size as InfoEachDepartmentAdmin
   const location = useLocation();
   const notificationRef = useRef(null);
-  const connectionRef = useRef(null);
+  
+  // Use the clean notification service
+  const { notifications: signalRNotifications, isConnected } = useNotificationService();
+  const [localNotifications, setLocalNotifications] = useState([]);
 
-  // Initialize SignalR connection
+  // Handle notifications from SignalR service
   useEffect(() => {
-    if (!accessToken) return;
-
-    const connection = new signalR.HubConnectionBuilder()
-      .withUrl(`${baseUrl.replace('/api/', '')}notificationHub`, {
-        accessTokenFactory: () => accessToken,
-        skipNegotiation: true,
-        transport: signalR.HttpTransportType.WebSockets,
-      })
-      .withAutomaticReconnect([0, 2000, 10000, 30000])
-      .configureLogging(signalR.LogLevel.Information)
-      .build();
-
-    connectionRef.current = connection;
-
-    // Connection event handlers
-    connection.onreconnecting(() => {
-      setConnectionStatus("Reconnecting");
-      console.log("SignalR reconnecting...");
-    });
-
-    connection.onreconnected(() => {
-      setConnectionStatus("Connected");
-      console.log("SignalR reconnected!");
-    });
-
-    connection.onclose(() => {
-      setConnectionStatus("Disconnected");
-      console.log("SignalR connection closed");
-    });
-
-    // Notification event handlers
-    connection.on("EnrollmentStatusUpdated", (message) => {
-      console.log("Received enrollment status update:", message);
-      setNotifications((prev) => [
+    if (signalRNotifications) {
+      console.log("Received SignalR notification:", signalRNotifications);
+      setLocalNotifications((prev) => [
         {
           id: Date.now(),
-          message: message,
-          type: "enrollment",
+          message: signalRNotifications,
+          type: "signalr",
           read: false,
           timestamp: new Date(),
         },
         ...prev,
       ]);
-    });
-
-    connection.on("StudentEnrollmentChanged", (message) => {
-      console.log("Received student enrollment change:", message);
-      setNotifications((prev) => [
-        {
-          id: Date.now(),
-          message: message,
-          type: "status",
-          read: false,
-          timestamp: new Date(),
-        },
-        ...prev,
-      ]);
-      // Refresh the courses list when enrollment changes
-      fetchCourses();
-    });
-
-    // Add more notification types
-    connection.on("GeneralNotification", (message) => {
-      console.log("Received general notification:", message);
-      setNotifications((prev) => [
-        {
-          id: Date.now(),
-          message: message,
-          type: "general",
-          read: false,
-          timestamp: new Date(),
-        },
-        ...prev,
-      ]);
-    });
-
-    connection.on("GradeUpdated", (message) => {
-      console.log("Received grade update:", message);
-      setNotifications((prev) => [
-        {
-          id: Date.now(),
-          message: message,
-          type: "grade",
-          read: false,
-          timestamp: new Date(),
-        },
-        ...prev,
-      ]);
-    });
-
-    const startConnection = async () => {
-      try {
-        setConnectionStatus("Connecting");
-        await connection.start();
-        setConnectionStatus("Connected");
-        console.log("SignalR Connected successfully");
-        
-        // Join user-specific group if needed
-        if (decodedToken?.userId) {
-          await connection.invoke("JoinUserGroup", decodedToken.userId);
-        }
-      } catch (err) {
-        setConnectionStatus("Failed");
-        console.error("SignalR Connection Error: ", err);
-        setTimeout(startConnection, 5000);
+      
+      // Refresh courses if it's an enrollment-related notification
+      if (signalRNotifications.includes("👨‍🏫") || signalRNotifications.includes("🧑‍🎓")) {
+        fetchCourses();
       }
-    };
-
-    startConnection();
-
-    return () => {
-      if (connection) {
-        connection.stop();
-      }
-    };
-  }, [accessToken, decodedToken?.userId]);
+    }
+  }, [signalRNotifications]);
 
   // Fetch the list of students
   const fetchData = async () => {
@@ -273,7 +177,7 @@ export default function DashboardStudent() {
   };
 
   const markAsRead = (notificationId) => {
-    setNotifications((prev) =>
+    setLocalNotifications((prev) =>
       prev.map((notification) =>
         notification.id === notificationId
           ? { ...notification, read: true }
@@ -283,12 +187,12 @@ export default function DashboardStudent() {
   };
 
   const clearAllNotifications = () => {
-    setNotifications([]);
+    setLocalNotifications([]);
   };
 
   // Test notification function
   const testNotification = () => {
-    setNotifications((prev) => [
+    setLocalNotifications((prev) => [
       {
         id: Date.now(),
         message: "Test notification - Your enrollment has been confirmed!",
@@ -324,7 +228,10 @@ export default function DashboardStudent() {
   }, [location]);
 
   // Get unread notifications count
-  const unreadCount = notifications.filter((n) => !n.read).length;
+  const unreadCount = localNotifications.filter((n) => !n.read).length;
+  
+  // Get connection status text
+  const connectionStatus = isConnected ? "Connected" : "Disconnected";
 
   return (
     <>
@@ -354,7 +261,7 @@ export default function DashboardStudent() {
             </div>
             {/* Connection status indicator */}
             <div className={styles.connectionStatus}>
-              <span className={`${styles.statusDot} ${styles[connectionStatus.toLowerCase()]}`}></span>
+              <span className={`${styles.statusDot} ${isConnected ? styles.connected : styles.disconnected}`}></span>
               <span className={styles.statusText}>{connectionStatus}</span>
             </div>
           </div>
@@ -382,15 +289,20 @@ export default function DashboardStudent() {
             </div>
           </div>
           <div className={styles.notificationList}>
-            {notifications.length === 0 ? (
+            {localNotifications.length === 0 ? (
               <div className={styles.noNotifications}>
                 No notifications
                 <div className={styles.connectionInfo}>
                   Status: {connectionStatus}
+                  {signalRNotifications && (
+                    <div style={{ marginTop: '8px', fontSize: '11px', color: '#007bff' }}>
+                      Latest from SignalR: {signalRNotifications}
+                    </div>
+                  )}
                 </div>
               </div>
             ) : (
-              notifications.map((notification) => (
+              localNotifications.map((notification) => (
                 <div
                   key={notification.id}
                   className={`${styles.notificationItem} ${
