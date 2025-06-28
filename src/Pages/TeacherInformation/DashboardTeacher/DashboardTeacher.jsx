@@ -9,35 +9,85 @@ import axios from "axios";
 import { authContext } from "../../../Context/AuthContextProvider";
 import { baseUrl } from "../../../Env/Env";
 import Swal from "sweetalert2";
-import Pagination from "../../../Shared/Css/Pagination.module.css"; // Import Pagination styles
+import Pagination from "../../../Shared/Css/Pagination.module.css";
 import { useNotificationService } from "../../../Service/NotificationService";
 
 export default function DashboardTeacher() {
   const [teacherId, setTeacherId] = useState("");
   const [schedules, setSchedules] = useState([]);
-  const [filteredSchedules, setFilteredSchedules] = useState([]); // State for filtered data
-  const [searchTerm, setSearchTerm] = useState(""); // State for search input
+  const [filteredSchedules, setFilteredSchedules] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [data, setData] = useState({
     students: 0,
     courses: 0,
     successRate: 0,
   });
-  const [currentPage, setCurrentPage] = useState(1); // State for current page
+  const [currentPage, setCurrentPage] = useState(1);
   const [showNotifications, setShowNotifications] = useState(false);
-  const pageSize = 4; // Number of items per page
+  const pageSize = 4;
   const location = useLocation();
   const notificationRef = useRef(null);
 
   const { decodedToken, accessToken } = useContext(authContext);
-  
-  // Use the clean notification service
-  const { notifications: signalRNotifications, isConnected } = useNotificationService();
+  const { notifications: signalRNotifications, isConnected } =
+    useNotificationService();
   const [localNotifications, setLocalNotifications] = useState([]);
 
-  // Handle notifications from SignalR service
+  // Fetch statistics and courses when decodedToken and accessToken are available
+  useEffect(() => {
+    if (!decodedToken?.userId || !accessToken) {
+      return;
+    }
+
+    setTeacherId(decodedToken.userId);
+
+    const fetchData = async () => {
+      try {
+        // Fetch statistics
+        const [studentsRes, coursesRes, successRateRes] = await Promise.all([
+          axios.get(
+            `https://educredit.runasp.net/api/teacher/statistics/1/${decodedToken.userId}`,
+            { headers: { Authorization: `Bearer ${accessToken}` } }
+          ),
+          axios.get(
+            `https://educredit.runasp.net/api/teacher/statistics/0/${decodedToken.userId}`,
+            { headers: { Authorization: `Bearer ${accessToken}` } }
+          ),
+          axios.get(
+            `https://educredit.runasp.net/api/teacher/statistics/2/${decodedToken.userId}`,
+            { headers: { Authorization: `Bearer ${accessToken}` } }
+          ),
+        ]);
+
+        setData({
+          students: studentsRes.data.total,
+          courses: coursesRes.data.total,
+          successRate: successRateRes.data.total,
+        });
+
+        // Fetch courses
+        const response = await axios.get(
+          `https://educredit.runasp.net/api/Course/${decodedToken.userId}/courses`,
+          { headers: { Authorization: `Bearer ${accessToken}` } }
+        );
+        setSchedules(response.data.result);
+        setFilteredSchedules(response.data.result);
+      } catch (err) {
+        console.error("Error fetching data:", err.message);
+        // Optionally handle error message
+      }
+    };
+
+    fetchData();
+  }, [decodedToken, accessToken]);
+
+  // Handle SignalR notifications
   useEffect(() => {
     if (signalRNotifications) {
-      console.log("Teacher received SignalR notification:", signalRNotifications);
+      console.log(
+        "Teacher received SignalR notification:",
+        signalRNotifications
+      );
       setLocalNotifications((prev) => [
         {
           id: Date.now(),
@@ -48,76 +98,26 @@ export default function DashboardTeacher() {
         },
         ...prev,
       ]);
-      
-      // Refresh courses if it's an enrollment-related notification
-      if (signalRNotifications.includes("👨‍🏫") || signalRNotifications.includes("🧑‍🎓")) {
+
+      // Fetch courses again when a notification is received
+      if (decodedToken?.userId && accessToken) {
         fetchCourses();
       }
     }
-  }, [signalRNotifications]);
+  }, [signalRNotifications, decodedToken, accessToken]);
 
-  // Fetch statistics for the cards
-  const fetchStatistics = async () => {
-    try {
-      const [studentsRes, coursesRes, successRateRes] = await Promise.all([
-        axios.get(
-          `https://educredit.runasp.net/api/teacher/statistics/1/${decodedToken.userId}`,
-          {
-            headers: { Authorization: `Bearer ${accessToken}` },
-          }
-        ),
-        axios.get(
-          `https://educredit.runasp.net/api/teacher/statistics/0/${decodedToken.userId}`,
-          {
-            headers: { Authorization: `Bearer ${accessToken}` },
-          }
-        ),
-        axios.get(
-          `https://educredit.runasp.net/api/teacher/statistics/2/${decodedToken.userId}`,
-          {
-            headers: { Authorization: `Bearer ${accessToken}` },
-          }
-        ),
-      ]);
-
-      setData({
-        students: studentsRes.data.total,
-        courses: coursesRes.data.total,
-        successRate: successRateRes.data.total,
-      });
-    } catch (err) {
-      const errorMessage = err.response?.data?.message || err.message;
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: `Failed to fetch statistics data: ${errorMessage}`,
-        confirmButtonText: "Ok!",
-      });
-    }
-  };
-
-  // Fetch course data for the table
+  // Fetch courses function
   const fetchCourses = async () => {
-    if (!teacherId) return;
     try {
       const response = await axios.get(
-        `https://educredit.runasp.net/api/Course/${teacherId}/courses`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
+        `https://educredit.runasp.net/api/Course/${decodedToken.userId}/courses`,
+        { headers: { Authorization: `Bearer ${accessToken}` } }
       );
       setSchedules(response.data.result);
-      setFilteredSchedules(response.data.result); // Initialize filtered data
+      setFilteredSchedules(response.data.result);
     } catch (error) {
+      console.error("Error fetching courses:", error.message);
       const errorMessage = error.response?.data?.message || error.message;
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: `Failed to fetch courses: ${errorMessage}`,
-        confirmButtonText: "Ok!",
-      });
     }
   };
 
@@ -125,9 +125,8 @@ export default function DashboardTeacher() {
   const handleSearch = (e) => {
     const term = e.target.value;
     setSearchTerm(term);
-    setCurrentPage(1); // Reset to first page on new search
+    setCurrentPage(1);
 
-    // Filter schedules based on the search term (case-insensitive)
     const filtered = schedules.filter((schedule) =>
       schedule.name.toLowerCase().includes(term.toLowerCase())
     );
@@ -159,21 +158,6 @@ export default function DashboardTeacher() {
     setLocalNotifications([]);
   };
 
-
-
-  useEffect(() => {
-    if (decodedToken?.userId) {
-      setTeacherId(decodedToken.userId);
-      fetchStatistics(); // Fetch statistics for the cards
-    }
-  }, [decodedToken, accessToken]);
-
-  useEffect(() => {
-    if (teacherId) {
-      fetchCourses(); // Fetch courses once teacherId is available
-    }
-  }, [teacherId]);
-
   // Close popup on outside click
   useEffect(() => {
     if (!showNotifications) return;
@@ -198,8 +182,6 @@ export default function DashboardTeacher() {
   }, [location]);
 
   const totalPages = Math.ceil(filteredSchedules.length / pageSize);
-  
-  // Get unread notifications count and connection status
   const unreadCount = localNotifications.filter((n) => !n.read).length;
   const connectionStatus = isConnected ? "Connected" : "Disconnected";
 
@@ -231,21 +213,34 @@ export default function DashboardTeacher() {
             </div>
             {/* Connection status indicator */}
             <div className={dashboardTeacher.connectionStatus}>
-              <span className={`${dashboardTeacher.statusDot} ${isConnected ? dashboardTeacher.connected : dashboardTeacher.disconnected}`}></span>
-              <span className={dashboardTeacher.statusText}>{connectionStatus}</span>
+              <span
+                className={`${dashboardTeacher.statusDot} ${
+                  isConnected
+                    ? dashboardTeacher.connected
+                    : dashboardTeacher.disconnected
+                }`}
+              ></span>
+              <span className={dashboardTeacher.statusText}>
+                {connectionStatus}
+              </span>
             </div>
           </div>
         </div>
       </div>
 
       {showNotifications && (
-        <div className={dashboardTeacher.notificationPopup} ref={notificationRef}>
+        <div
+          className={dashboardTeacher.notificationPopup}
+          ref={notificationRef}
+        >
           <div className={dashboardTeacher.notificationHeader}>
             <div className={dashboardTeacher.headerTitle}>
               <i className="fas fa-bell"></i>
               <h3>Notifications</h3>
               {unreadCount > 0 && (
-                <span className={dashboardTeacher.headerBadge}>{unreadCount}</span>
+                <span className={dashboardTeacher.headerBadge}>
+                  {unreadCount}
+                </span>
               )}
             </div>
             {localNotifications.length > 0 && (
@@ -266,10 +261,19 @@ export default function DashboardTeacher() {
                   <i className="far fa-bell-slash"></i>
                 </div>
                 <h4>No notifications yet</h4>
-                <p>You'll see student enrollment updates and course notifications here</p>
+                <p>
+                  You'll see student enrollment updates and course notifications
+                  here
+                </p>
                 <div className={dashboardTeacher.connectionInfo}>
                   <div className={dashboardTeacher.connectionIndicator}>
-                    <span className={`${dashboardTeacher.statusDot} ${isConnected ? dashboardTeacher.connected : dashboardTeacher.disconnected}`}></span>
+                    <span
+                      className={`${dashboardTeacher.statusDot} ${
+                        isConnected
+                          ? dashboardTeacher.connected
+                          : dashboardTeacher.disconnected
+                      }`}
+                    ></span>
                     <span>{connectionStatus}</span>
                   </div>
                 </div>
@@ -279,7 +283,9 @@ export default function DashboardTeacher() {
                 <div
                   key={notification.id}
                   className={`${dashboardTeacher.notificationItem} ${
-                    notification.read ? dashboardTeacher.read : dashboardTeacher.unread
+                    notification.read
+                      ? dashboardTeacher.read
+                      : dashboardTeacher.unread
                   }`}
                   onClick={() => markAsRead(notification.id)}
                 >
@@ -296,10 +302,13 @@ export default function DashboardTeacher() {
                     </div>
                     <div className={dashboardTeacher.notificationMeta}>
                       <span className={dashboardTeacher.notificationTime}>
-                        {new Date(notification.timestamp).toLocaleTimeString([], {
-                          hour: '2-digit',
-                          minute: '2-digit'
-                        })}
+                        {new Date(notification.timestamp).toLocaleTimeString(
+                          [],
+                          {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          }
+                        )}
                       </span>
                       <span className={dashboardTeacher.notificationDate}>
                         {new Date(notification.timestamp).toLocaleDateString()}

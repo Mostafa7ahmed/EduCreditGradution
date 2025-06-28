@@ -116,16 +116,11 @@ export default function EditStudentAdmin() {
         );
 
         if (response.status === 200 || response.status === 204) {
-          alert("Student updated successfully!");
           navigate("/AdminRole/ManageStudentAdmin");
         } else {
           throw new Error("Failed to update student");
         }
       } catch (error) {
-        alert(
-          error.response?.data?.message ||
-            "Error updating student. Please try again."
-        );
         setError(error.response?.data?.message || "Error updating student.");
       } finally {
         setIsLoading(false);

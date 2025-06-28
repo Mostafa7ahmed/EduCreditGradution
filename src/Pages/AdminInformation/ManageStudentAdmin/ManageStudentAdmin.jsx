@@ -67,7 +67,6 @@ export default function ManageStudentAdmin() {
       });
       setAllStudents((prev) => prev.filter((s) => s.id !== selectedStudent.id));
       setShowModal(false);
-      alert("Student deleted successfully!");
     } catch (error) {
       console.error("Error deleting student:", error.message);
     }

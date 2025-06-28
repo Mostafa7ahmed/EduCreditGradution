@@ -45,12 +45,6 @@ export default function InfoStudentsNameAndGrade() {
       setFilteredStudents(allStudents); // Initialize filtered data
     } catch (error) {
       const errorMessage = error.response?.data?.message || error.message;
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: `Failed to fetch student data: ${errorMessage}`,
-        confirmButtonText: "Ok!",
-      });
     }
   };
 
@@ -60,7 +54,6 @@ export default function InfoStudentsNameAndGrade() {
     setSearchTerm(term);
     setCurrentPage(1); // Reset to first page on new search
 
-    // Filter students based on the search term (case-insensitive)
     const filtered = students.filter((student) =>
       student.studentName.toLowerCase().includes(term.toLowerCase())
     );
@@ -74,15 +67,11 @@ export default function InfoStudentsNameAndGrade() {
   };
 
   useEffect(() => {
-    if (decodedToken?.userId) {
-      setTeacherId(decodedToken.userId);
-    }
+    setTeacherId(decodedToken.userId);
   }, [decodedToken]);
 
   useEffect(() => {
-    if (teacherId) {
-      fetchCourses(); // Fetch data once teacherId is available
-    }
+    fetchCourses(); // Fetch data once teacherId is available
   }, [teacherId]);
 
   const totalPages = Math.ceil(filteredStudents.length / pageSize);

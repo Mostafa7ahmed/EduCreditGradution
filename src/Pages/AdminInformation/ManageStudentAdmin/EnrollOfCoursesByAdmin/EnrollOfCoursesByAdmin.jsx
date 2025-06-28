@@ -294,12 +294,6 @@ export default function EnrollOfCoursesByAdmin() {
         data: error.response?.data,
       });
       const errorMessage = error.response?.data?.message || error.message;
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: `Failed to save enrollment: ${errorMessage}`,
-        confirmButtonText: "Ok!",
-      });
     }
   };
 

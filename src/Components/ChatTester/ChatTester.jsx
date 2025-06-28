@@ -44,8 +44,8 @@ function ChatTester() {
       return;
     }
 
-    const hubUrl = baseUrl.replace('/api', '') + 'chatHub';
-    console.log('🧪 Connecting to Chat Hub for testing:', hubUrl);
+    const hubUrl = baseUrl.replace("/api", "") + "chatHub";
+    console.log("🧪 Connecting to Chat Hub for testing:", hubUrl);
 
     const connection = new signalR.HubConnectionBuilder()
       .withUrl(hubUrl, {
@@ -56,7 +56,8 @@ function ChatTester() {
 
     hubConnection.current = connection;
 
-    connection.start()
+    connection
+      .start()
       .then(() => {
         console.log("🧪✅ Test chat connected for course:", courseId);
         setIsConnected(true);
@@ -122,14 +123,23 @@ function ChatTester() {
     setInput("");
 
     try {
-      if (hubConnection.current && hubConnection.current.state === signalR.HubConnectionState.Connected) {
-        await hubConnection.current.invoke("SendMessageToGroup", courseId, messageText);
+      if (
+        hubConnection.current &&
+        hubConnection.current.state === signalR.HubConnectionState.Connected
+      ) {
+        await hubConnection.current.invoke(
+          "SendMessageToGroup",
+          courseId,
+          messageText
+        );
         console.log("🧪 Test message sent via SignalR");
       } else {
-        console.log("🧪 SignalR not connected, sending test message via HTTP...");
+        console.log(
+          "🧪 SignalR not connected, sending test message via HTTP..."
+        );
         const response = await fetch(`${baseUrl}Chat/messages`, {
-          method: 'POST',
-          headers: { 
+          method: "POST",
+          headers: {
             Authorization: `Bearer ${accessToken}`,
             "Content-Type": "application/json",
           },
@@ -138,7 +148,7 @@ function ChatTester() {
             message: messageText,
           }),
         });
-        
+
         if (response.ok) {
           const result = await response.json();
           console.log("🧪 Test message sent via HTTP:", result);
@@ -149,7 +159,6 @@ function ChatTester() {
     } catch (err) {
       console.error("🧪 Test send message failed:", err);
       setInput(messageText);
-      alert("Failed to send test message. Please try again.");
     }
   };
 
@@ -157,8 +166,11 @@ function ChatTester() {
   const sendTypingNotification = () => {
     if (!hubConnection.current || !courseId) return;
 
-    hubConnection.current.invoke("SendTypingNotification", courseId, userName)
-      .catch((error) => console.error("🧪 Test typing notification failed:", error));
+    hubConnection.current
+      .invoke("SendTypingNotification", courseId, userName)
+      .catch((error) =>
+        console.error("🧪 Test typing notification failed:", error)
+      );
   };
 
   // Handle input change with typing notification
@@ -173,7 +185,7 @@ function ChatTester() {
     padding: "20px",
     border: "2px solid #007bff",
     borderRadius: "8px",
-    backgroundColor: "#f8f9fa"
+    backgroundColor: "#f8f9fa",
   };
 
   const headerStyle = {
@@ -182,7 +194,7 @@ function ChatTester() {
     padding: "10px",
     borderRadius: "6px",
     marginBottom: "15px",
-    textAlign: "center"
+    textAlign: "center",
   };
 
   const statusStyle = {
@@ -191,7 +203,7 @@ function ChatTester() {
     marginBottom: "10px",
     backgroundColor: isConnected ? "#d4edda" : "#f8d7da",
     color: isConnected ? "#155724" : "#721c24",
-    border: `1px solid ${isConnected ? "#c3e6cb" : "#f5c6cb"}`
+    border: `1px solid ${isConnected ? "#c3e6cb" : "#f5c6cb"}`,
   };
 
   const messagesStyle = {
@@ -201,13 +213,13 @@ function ChatTester() {
     padding: "10px",
     marginBottom: "15px",
     backgroundColor: "white",
-    borderRadius: "4px"
+    borderRadius: "4px",
   };
 
   const inputStyle = {
     display: "flex",
     gap: "10px",
-    marginTop: "10px"
+    marginTop: "10px",
   };
 
   return (
@@ -217,7 +229,8 @@ function ChatTester() {
       </div>
 
       <div style={statusStyle}>
-        <strong>Status:</strong> {isConnected ? "🟢 Connected" : "🔴 Disconnected"}
+        <strong>Status:</strong>{" "}
+        {isConnected ? "🟢 Connected" : "🔴 Disconnected"}
         {typingUsers.size > 0 && (
           <span style={{ marginLeft: "20px", fontStyle: "italic" }}>
             👀 {Array.from(typingUsers).join(", ")} typing...
@@ -226,7 +239,10 @@ function ChatTester() {
       </div>
 
       <div>
-        <label htmlFor="courseId" style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
+        <label
+          htmlFor="courseId"
+          style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}
+        >
           Course ID for Testing:
         </label>
         <input
@@ -235,12 +251,22 @@ function ChatTester() {
           value={courseId}
           onChange={(e) => setCourseId(e.target.value)}
           placeholder="Enter a course ID (GUID)"
-          style={{ width: "100%", padding: "8px", marginBottom: "10px", borderRadius: "4px", border: "1px solid #ccc" }}
+          style={{
+            width: "100%",
+            padding: "8px",
+            marginBottom: "10px",
+            borderRadius: "4px",
+            border: "1px solid #ccc",
+          }}
         />
       </div>
 
       <div style={messagesStyle}>
-        {messages.length === 0 && <p style={{ color: "#6c757d", fontStyle: "italic" }}>No messages yet. Enter a course ID and start testing!</p>}
+        {messages.length === 0 && (
+          <p style={{ color: "#6c757d", fontStyle: "italic" }}>
+            No messages yet. Enter a course ID and start testing!
+          </p>
+        )}
 
         {messages.map((msg, index) => (
           <div
@@ -253,11 +279,12 @@ function ChatTester() {
             <div
               style={{
                 display: "inline-block",
-                backgroundColor: msg.senderId === userId ? "#dcf8c6" : "#e9ecef",
+                backgroundColor:
+                  msg.senderId === userId ? "#dcf8c6" : "#e9ecef",
                 borderRadius: "12px",
                 padding: "10px",
                 maxWidth: "70%",
-                boxShadow: "0 1px 2px rgba(0,0,0,0.1)"
+                boxShadow: "0 1px 2px rgba(0,0,0,0.1)",
               }}
             >
               <strong style={{ color: "#495057" }}>{msg.senderName}</strong>
@@ -277,25 +304,25 @@ function ChatTester() {
           onChange={handleInputChange}
           onKeyDown={(e) => e.key === "Enter" && sendMessage()}
           placeholder="Type a test message..."
-          style={{ 
-            flex: 1, 
-            padding: "10px", 
-            borderRadius: "4px", 
+          style={{
+            flex: 1,
+            padding: "10px",
+            borderRadius: "4px",
             border: "1px solid #ccc",
-            outline: "none"
+            outline: "none",
           }}
           disabled={!courseId}
         />
-        <button 
+        <button
           onClick={sendMessage}
           disabled={!courseId || !input.trim()}
-          style={{ 
-            padding: "10px 20px", 
+          style={{
+            padding: "10px 20px",
             backgroundColor: courseId && input.trim() ? "#007bff" : "#6c757d",
-            color: "white", 
-            border: "none", 
+            color: "white",
+            border: "none",
             borderRadius: "4px",
-            cursor: courseId && input.trim() ? "pointer" : "not-allowed"
+            cursor: courseId && input.trim() ? "pointer" : "not-allowed",
           }}
         >
           Send
@@ -303,7 +330,9 @@ function ChatTester() {
       </div>
 
       <div style={{ marginTop: "15px", fontSize: "0.9em", color: "#6c757d" }}>
-        <p><strong>Instructions:</strong></p>
+        <p>
+          <strong>Instructions:</strong>
+        </p>
         <ul style={{ paddingLeft: "20px" }}>
           <li>Enter a valid course ID (GUID format) to start testing</li>
           <li>The component will automatically load existing messages</li>
@@ -316,4 +345,4 @@ function ChatTester() {
   );
 }
 
-export default ChatTester; 
+export default ChatTester;

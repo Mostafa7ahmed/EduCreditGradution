@@ -34,12 +34,6 @@ export default function CoursesScheduled() {
       setFilteredSchedules(response.data.result); // Initialize filtered data
     } catch (error) {
       const errorMessage = error.response?.data?.message || error.message;
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: `Failed to fetch courses: ${errorMessage}`,
-        confirmButtonText: "Ok!",
-      });
     }
   };
 
@@ -47,7 +41,7 @@ export default function CoursesScheduled() {
   const handleSearch = (e) => {
     const term = e.target.value;
     setSearchTerm(term);
-    setCurrentPage(1); // Reset to first page on new search
+    setCurrentPage(1);
 
     // Filter schedules based on the search term (case-insensitive)
     const filtered = schedules.filter((schedule) =>
@@ -66,13 +60,11 @@ export default function CoursesScheduled() {
     if (decodedToken?.userId) {
       setTeacherId(decodedToken.userId);
     }
-  }, [decodedToken]);
+  }, []);
 
   useEffect(() => {
-    if (teacherId) {
-      fetchCourses(); // Fetch courses once teacherId is available
-    }
-  }, [teacherId]);
+    fetchCourses();
+  }, []);
 
   const totalPages = Math.ceil(filteredSchedules.length / pageSize);
 

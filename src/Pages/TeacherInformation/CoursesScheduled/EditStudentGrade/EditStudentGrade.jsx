@@ -53,24 +53,16 @@ export default function EditStudentGrade() {
       });
     } catch (error) {
       const errorMessage = error.response?.data?.message || error.message;
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: `Failed to fetch student data: ${errorMessage}`,
-        confirmButtonText: "Ok!",
-      });
     }
   };
 
   useEffect(() => {
     fetchStudentData();
-  }, [teacherId, enrollmentTableId, courseId]);
+  }, []);
 
   useEffect(() => {
-    if (decodedToken?.nameid) {
-      setTeacherId(decodedToken.nameid);
-    }
-  }, [decodedToken]);
+    setTeacherId(decodedToken.nameid);
+  }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -109,12 +101,6 @@ export default function EditStudentGrade() {
         const errorMessage =
           error.response?.data?.message || "Failed to update grade.";
         setError(errorMessage);
-        Swal.fire({
-          icon: "error",
-          title: "Error!",
-          text: errorMessage,
-          confirmButtonText: "Ok!",
-        });
       }
     },
   });

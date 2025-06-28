@@ -41,7 +41,6 @@ export default function StudyScheduleAdmin() {
         data: error.response?.data,
       });
       const errorMessage = error.response?.data?.message || error.message;
-      alert(`Failed to fetch study schedule: ${errorMessage}`);
     }
   };
 

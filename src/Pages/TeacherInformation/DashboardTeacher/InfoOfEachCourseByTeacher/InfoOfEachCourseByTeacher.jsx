@@ -17,13 +17,12 @@ export default function InfoOfEachCourseByTeacher() {
     examStart: "",
     examEnd: "",
     examLocation: "",
-    minimumDegree: 0, // Added minimumDegree
-    creditHours: 0, // Added creditHours
-    previousCourse: "", // Added previousCourse
+    minimumDegree: 0,
+    creditHours: 0,
+    previousCourse: "",
   });
   const [semesterId, setSemesterId] = useState(null); // State for semesterId
 
-  // Fetch the current semester ID
   const fetchCurrentSemester = async () => {
     try {
       const token = localStorage.getItem("accesstoken");
@@ -40,18 +39,11 @@ export default function InfoOfEachCourseByTeacher() {
       setSemesterId(response.data.result.id);
     } catch (error) {
       const errorMessage = error.response?.data?.message || error.message;
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: `Failed to fetch semester data: ${errorMessage}`,
-        confirmButtonText: "Ok!",
-      });
     }
   };
 
-  // Fetch course data using courseId and semesterId
   const fetchCourseData = async () => {
-    if (!semesterId) return; // Wait until semesterId is available
+    if (!semesterId) return;
 
     try {
       const token = localStorage.getItem("accesstoken");
@@ -59,7 +51,6 @@ export default function InfoOfEachCourseByTeacher() {
         throw new Error("No token found. Please log in again.");
       }
 
-      // Use both courseId and semesterId as path parameters
       const response = await axios.get(
         `${baseUrl}Schedule/${courseId}/${semesterId}`,
         {
@@ -97,12 +88,6 @@ export default function InfoOfEachCourseByTeacher() {
       } else {
         errorMessage = error.message;
       }
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: errorMessage,
-        confirmButtonText: "Ok!",
-      });
     }
   };
 
