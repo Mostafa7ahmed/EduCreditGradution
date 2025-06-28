@@ -47,7 +47,6 @@ export default function CourseResults() {
     } catch (error) {
       console.error("Error fetching students:", error.message);
       const errorMessage = error.response?.data?.message || error.message;
-      alert(errorMessage);
     }
   };
 
@@ -89,7 +88,6 @@ export default function CourseResults() {
         data: error.response?.data,
       });
       const errorMessage = error.response?.data?.message || error.message;
-      alert(`Failed to fetch course results: ${errorMessage}`);
     }
   };
 
