@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styles from "../../../SuperAdminInformation/ManageStudents/InfoStudent/InfoStudent.module.css";
 import axios from "axios";
