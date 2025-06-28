@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import styles from "../../SuperAdminInformation/DashboardSuperAdmin/DashboardSuperAdmin.module.css";
 import Table from "../../../Shared/Css/TableDesign.module.css";
 import SearchNotification from "../../../Shared/Css/SearchInputNotification.module.css";
-import Cards from "../../../Components/cards/cards";
 import Information from "../../../../src/Shared/Css/InfoAndInformation.module.css";
 import Pagination from "../../../Shared/Css/Pagination.module.css";
 import { Link } from "react-router-dom";
@@ -72,7 +71,7 @@ export default function DashboardAdmin() {
         </div>
       </div>
       <div className={styles.container}>
-        <Cards />
+        {/* <Cards /> */}
         <div className={`${Information.line}`}></div>
         <table className={Table.table}>
           <thead>
