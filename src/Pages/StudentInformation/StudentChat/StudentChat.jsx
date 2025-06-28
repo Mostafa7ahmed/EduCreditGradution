@@ -75,7 +75,7 @@ export default function StudentChat() {
   useEffect(() => {
     if (!selectedCourseId || !accessToken) return;
 
-    const hubUrl = baseUrl.replace('/api', '') + 'chatHub';
+    const hubUrl ='https://educredit.runasp.net/chatHub';
     console.log('Connecting to Chat Hub:', hubUrl);
 
     const connection = new signalR.HubConnectionBuilder()
