@@ -4,6 +4,7 @@ import axios from "axios";
 import { authContext } from "../../../Context/AuthContextProvider";
 import { baseUrl } from "../../../Env/Env";
 import * as signalR from "@microsoft/signalr";
+import Swal from "sweetalert2";
 
 export default function TeacherChat() {
   const [chatGroups, setChatGroups] = useState([]);
@@ -147,6 +148,15 @@ export default function TeacherChat() {
     // Handle message errors
     connection.on("MessageError", (error) => {
       console.error("Message error:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Message Error",
+        text: error || "An error occurred while sending the message.",
+        toast: true,
+        position: "top-end",
+        timer: 3000,
+        showConfirmButton: false,
+      });
     });
 
     // Connection lifecycle events
