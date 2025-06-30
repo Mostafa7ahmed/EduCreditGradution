@@ -120,6 +120,12 @@ export default function SidebarTeacher() {
                 <p>Manage Guidance</p>
               </NavLink>
             </li>
+            <li>
+              <NavLink to="/TeacherRole/TeacherChat">
+                <i className="fa-regular fa-message"></i>
+                <p>Chats</p>
+              </NavLink>
+            </li>
           </ul>
 
           <h3 className={SidebarTeacherStyle.SecondTitle}>OTHER</h3>
