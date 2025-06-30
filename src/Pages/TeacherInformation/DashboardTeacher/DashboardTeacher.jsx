@@ -32,6 +32,7 @@ export default function DashboardTeacher() {
   const { notifications: signalRNotifications, isConnected } =
     useNotificationService();
   const [localNotifications, setLocalNotifications] = useState([]);
+  const [apiNotifications, setApiNotifications] = useState([]);
 
   // Fetch statistics and courses when decodedToken and accessToken are available
   useEffect(() => {
@@ -80,6 +81,28 @@ export default function DashboardTeacher() {
 
     fetchData();
   }, [decodedToken, accessToken]);
+
+  // Fetch notifications from API
+  const fetchApiNotifications = async () => {
+    try {
+      const response = await axios.get(
+        "https://educredit.runasp.net/api/Notifications",
+        {
+          headers: {
+            accept: "*/*",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      setApiNotifications(response.data.result || []);
+    } catch (error) {
+      console.error("Error fetching API notifications:", error.message);
+    }
+  };
+
+  useEffect(() => {
+    if (accessToken) fetchApiNotifications();
+  }, [accessToken]);
 
   // Handle SignalR notifications
   useEffect(() => {
@@ -181,8 +204,18 @@ export default function DashboardTeacher() {
     setShowNotifications(false);
   }, [location]);
 
-  const totalPages = Math.ceil(filteredSchedules.length / pageSize);
-  const unreadCount = localNotifications.filter((n) => !n.read).length;
+  // Merge API and SignalR notifications for display
+  const allNotifications = [
+    ...apiNotifications.map((n) => ({
+      id: n.id,
+      message: n.message,
+      type: "api",
+      read: false,
+      timestamp: n.createdAt || new Date(),
+    })),
+    ...localNotifications,
+  ];
+  const unreadCount = allNotifications.filter((n) => !n.read).length;
   const connectionStatus = isConnected ? "Connected" : "Disconnected";
 
   return (
@@ -243,7 +276,7 @@ export default function DashboardTeacher() {
                 </span>
               )}
             </div>
-            {localNotifications.length > 0 && (
+            {allNotifications.length > 0 && (
               <button
                 className={dashboardTeacher.clearButton}
                 onClick={clearAllNotifications}
@@ -255,7 +288,7 @@ export default function DashboardTeacher() {
             )}
           </div>
           <div className={dashboardTeacher.notificationList}>
-            {localNotifications.length === 0 ? (
+            {allNotifications.length === 0 ? (
               <div className={dashboardTeacher.noNotifications}>
                 <div className={dashboardTeacher.emptyIcon}>
                   <i className="far fa-bell-slash"></i>
@@ -279,7 +312,7 @@ export default function DashboardTeacher() {
                 </div>
               </div>
             ) : (
-              localNotifications.map((notification) => (
+              allNotifications.map((notification) => (
                 <div
                   key={notification.id}
                   className={`${dashboardTeacher.notificationItem} ${

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import * as signalR from '@microsoft/signalr';
+import axios from 'axios';
 
 // Custom hook for SignalR notifications (React equivalent of the Angular service)
 export const useNotificationService = () => {
@@ -205,4 +206,15 @@ export const useNotificationServiceClass = () => {
     isConnected,
     clearNotification: () => notificationService.clearNotifications()
   };
-}; 
+};
+
+// Fetch all notifications from the API with token authentication (using axios)
+export const fetchAllNotifications = async (token) => {
+  const response = await axios.get('https://educredit.runasp.net/api/Notifications', {
+    headers: {
+      'accept': '*/*',
+      'Authorization': `Bearer ${token}`
+    }
+  });
+  return response.data;
+};
