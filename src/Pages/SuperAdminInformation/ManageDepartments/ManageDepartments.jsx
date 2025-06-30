@@ -92,7 +92,6 @@ export default function ManageDepartments() {
 
         // ✅ تحديث الصفحة بعد الحذف
         await fetchDepartments();
-        alert("Department deleted successfully!");
 
         setDeleteSuccess(true);
         setTimeout(() => setDeleteSuccess(false), 2000);

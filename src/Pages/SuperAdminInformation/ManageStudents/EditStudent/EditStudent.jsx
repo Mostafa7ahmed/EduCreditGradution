@@ -139,7 +139,7 @@ export default function EditStudent() {
         );
 
         console.log("Updated successfully:", response.data);
-        alert("Student Updated successfully");
+      
         navigate("/SuperAdminRole/ManageStudents");
       } catch (error) {
         const errorMessage =

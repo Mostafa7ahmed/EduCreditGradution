@@ -112,7 +112,6 @@ export default function ManageSemesters() {
 
         // ✅ تحديث البيانات بعد الحذف
         await fetchSemesters();
-        alert("Semester deleted successfully!");
 
         setDeleteSuccess(true);
         setTimeout(() => setDeleteSuccess(false), 2000);

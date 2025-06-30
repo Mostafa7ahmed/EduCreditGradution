@@ -65,7 +65,6 @@ export default function CourseResultsByTeachers() {
         data: error.response?.data,
       });
       const errorMessage = error.response?.data?.message || error.message;
-      alert(`Failed to fetch course results: ${errorMessage}`);
     }
   };
 

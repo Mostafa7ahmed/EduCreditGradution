@@ -92,17 +92,13 @@ export default function AddStudent() {
         );
 
         if (response.status === 200 || response.status === 201) {
-          alert("Student added successfully!");
           resetForm();
           navigate("/SuperAdminRole/ManageStudents"); // ✅ التوجيه بعد النجاح
         } else {
           throw new Error("Failed to add Student");
         }
       } catch (error) {
-        alert(
-          error.response?.data?.message ||
-            "Error adding Student. Please try again."
-        );
+       
       } finally {
         setIsLoading(false);
       }

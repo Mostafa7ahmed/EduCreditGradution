@@ -68,7 +68,6 @@ export default function ManageTeachers() {
       });
       setAllTeachers((prev) => prev.filter((t) => t.id !== selectedTeacher.id));
       setShowModal(false);
-      alert("Teacher deleted successfully!");
     } catch (error) {
       console.error("Error deleting teacher:", error.message);
     }

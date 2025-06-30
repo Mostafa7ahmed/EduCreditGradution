@@ -148,7 +148,6 @@ export default function EditCourse() {
           }
         );
         console.log("Updated successfully:", response.data);
-        alert("Course Updated successfully");
         navigate("/SuperAdminRole/ManageCourses");
       } catch (error) {
         console.error(

@@ -147,7 +147,6 @@ export default function TeacherChat() {
     // Handle message errors
     connection.on("MessageError", (error) => {
       console.error("Message error:", error);
-      alert("Failed to send message. Please try again.");
     });
 
     // Connection lifecycle events
@@ -249,7 +248,6 @@ export default function TeacherChat() {
     } catch (err) {
       console.error("❌ Send message failed:", err);
       setInput(messageText); // Restore input on error
-      alert("Failed to send message. Please check your connection.");
     }
   }, [input, selectedCourseId]);
 

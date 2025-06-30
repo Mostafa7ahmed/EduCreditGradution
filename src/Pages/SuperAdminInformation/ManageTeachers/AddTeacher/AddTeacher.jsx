@@ -89,7 +89,7 @@ export default function AddTeacher() {
         );
 
         if (response.status === 200 || response.status === 201) {
-          alert("Teacher added successfully!");
+         
           resetForm();
           navigate("/SuperAdminRole/ManageTeachers");
         } else {

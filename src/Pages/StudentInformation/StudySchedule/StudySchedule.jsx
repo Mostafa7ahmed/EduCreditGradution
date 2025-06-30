@@ -37,7 +37,6 @@ export default function StudySchedule() {
     } catch (error) {
       console.error("Error fetching students:", error.message);
       const errorMessage = error.response?.data?.message || error.message;
-      alert(errorMessage);
     }
   };
 
@@ -56,8 +55,6 @@ export default function StudySchedule() {
       setStudentData(data);
     } catch (error) {
       console.error("Error fetching student details:", error.message);
-      const errorMessage = error.response?.data?.message || error.message;
-      alert(errorMessage);
     }
   };
 
@@ -85,7 +82,6 @@ export default function StudySchedule() {
         data: error.response?.data,
       });
       const errorMessage = error.response?.data?.message || error.message;
-      alert(`Failed to fetch study schedule: ${errorMessage}`);
     }
   };
 

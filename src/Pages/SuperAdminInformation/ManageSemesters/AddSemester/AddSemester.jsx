@@ -88,13 +88,11 @@ export default function AddSemester() {
             },
           }
         );
-        alert("Semester added successfully!");
         navigate("/SuperAdminRole/ManageSemesters");
         formik.resetForm();
       } catch (error) {
         console.error("Error submitting semester:", error);
         const errorMessage = error.response?.data?.message || error.message;
-        alert(errorMessage);
       }
     },
   });

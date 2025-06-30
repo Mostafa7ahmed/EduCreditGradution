@@ -76,7 +76,7 @@ export default function AddAdmin() {
         );
 
         if (response.status === 200 || response.status === 201) {
-          alert("Admin added successfully!");
+         
           navigate("/SuperAdminRole/ManageAdmins");
           resetForm();
         } else {

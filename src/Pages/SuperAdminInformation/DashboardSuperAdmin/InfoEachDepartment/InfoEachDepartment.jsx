@@ -85,7 +85,6 @@ export default function InfoEachDepartment() {
     } catch (error) {
       console.error("Error fetching semester:", error.message);
       const errorMessage = error.response?.data?.message || error.message;
-      alert(errorMessage);
     }
   };
 
@@ -139,7 +138,6 @@ export default function InfoEachDepartment() {
 
         // Refresh courses list
         await fetchCourses();
-        alert("Course deleted successfully!");
 
         setDeleteSuccess(true);
         setTimeout(() => setDeleteSuccess(false), 2000);
@@ -151,10 +149,7 @@ export default function InfoEachDepartment() {
         "Error deleting course:",
         error.response ? error.response.data : error.message
       );
-      alert(
-        error.response?.data?.message ||
-          "Failed to delete course. Please try again."
-      );
+     
     }
 
     setShowModal(false);

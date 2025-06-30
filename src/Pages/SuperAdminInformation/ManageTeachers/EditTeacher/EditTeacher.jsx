@@ -139,7 +139,6 @@ export default function EditTeacher() {
         );
 
         console.log("Updated successfully:", response.data);
-        alert("Teacher updated successfully!");
         navigate("/SuperAdminRole/ManageTeachers");
       } catch (error) {
         const errorMessage =

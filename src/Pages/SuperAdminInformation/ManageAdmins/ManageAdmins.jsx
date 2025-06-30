@@ -94,7 +94,7 @@ export default function ManageAdmins() {
 
         // ✅ تحديث البيانات بعد الحذف
         await fetchAdmins();
-        alert("Admin deleted successfully!");
+       
       } else {
         console.error("Unexpected response:", response);
       }

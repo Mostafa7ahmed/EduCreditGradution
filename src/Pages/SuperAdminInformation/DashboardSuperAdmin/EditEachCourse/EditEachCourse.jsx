@@ -117,16 +117,13 @@ export default function EditEachCourse() {
           examEnd: updatedCourse.examEnd?.slice(0, 5) || "00:00",
         });
 
-        alert("Schedule updated successfully!");
         navigate(
           `/SuperAdminRole/InfoEachDepartment/InfoEachCourse/${courseId}`
         );
       } catch (err) {
         console.error("Error updating course:", err);
         if (err.response && err.response.data && err.response.data.message) {
-          alert(`Error: ${err.response.data.message}`);
         } else {
-          alert("Something went wrong while updating the schedule.");
         }
       }
     },
@@ -178,7 +175,6 @@ export default function EditEachCourse() {
         setIsLoading(false);
       } catch (err) {
         console.error(err);
-        alert("Failed to fetch data. Please try again later.");
         setIsLoading(false);
       }
     };

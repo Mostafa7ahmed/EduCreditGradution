@@ -124,7 +124,7 @@ export default function EditAdmin() {
 
         console.log("Updated successfully:", response.data);
         if (response.status === 200 || response.status === 201) {
-          alert("Admin updated successfully!");
+         
           navigate("/SuperAdminRole/ManageAdmins");
           resetForm();
         } else {

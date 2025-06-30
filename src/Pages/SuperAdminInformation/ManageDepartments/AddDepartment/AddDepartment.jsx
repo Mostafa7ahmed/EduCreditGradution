@@ -46,7 +46,6 @@ export default function AddDepartment() {
         console.log("Response:", response);
 
         if (response.status === 200 || response.status === 201) {
-          alert("Department added successfully!");
           navigate("/SuperAdminRole/ManageDepartments");
           resetForm();
         } else {

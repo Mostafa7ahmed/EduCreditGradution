@@ -94,7 +94,7 @@ export default function ManageCourses() {
 
         // ✅ تحديث البيانات بعد الحذف
         await fetchCourses();
-        alert("Course deleted successfully!");
+     
 
         setDeleteSuccess(true);
         setTimeout(() => setDeleteSuccess(false), 2000);

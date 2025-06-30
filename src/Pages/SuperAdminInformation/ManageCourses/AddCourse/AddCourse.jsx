@@ -102,7 +102,6 @@ export default function AddCourse() {
         });
 
         if (response.status === 200 || response.status === 201) {
-          alert("Course added successfully!");
           resetForm();
           navigate("/SuperAdminRole/ManageCourses");
         } else {

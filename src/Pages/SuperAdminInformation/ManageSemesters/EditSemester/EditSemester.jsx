@@ -116,10 +116,9 @@ export default function EditSemester() {
             },
           }
         );
-        alert("Semester updated successfully!");
+
       } catch (error) {
         console.error("Error updating semester:", error);
-        alert("Failed to update semester");
       }
     },
   });
