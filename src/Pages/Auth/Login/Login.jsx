@@ -61,10 +61,10 @@ export default function Login() {
               dashboardRoute = "/DashboardStudent";
               break;
             default:
-              dashboardRoute = `/Dashboard${roleEnum[decoded.role]}`;
+              // dashboardRoute = `/Dashboard${roleEnum[decoded.role]}`;
           }
         } else {
-          dashboardRoute = `/Dashboard${roleEnum.find(r => r === decoded.role) || ""}`;
+          // dashboardRoute = `/Dashboard${roleEnum.find(r => r === decoded.role) || ""}`;
         }
         navigate(dashboardRoute);
         // ✅ Save Tokens
