@@ -76,12 +76,11 @@ export default function StudentChat() {
     }
   }, [accessToken]);
 
-  // Initialize SignalR connection and set up handlers
-  useEffect(() => {
-    if (!selectedCourseId || !accessToken) return;
-
-    const hubUrl = baseUrl.replace('/api', '') + 'chatHub';
-    console.log('Connecting to Chat Hub:', hubUrl);
+  // Fallback connection method for CORS issues
+  const tryFallbackConnection = async () => {
+    try {
+      const hubUrl = baseUrl.replace('/api', '') + 'chatHub';
+      console.log('🔄 Trying fallback connection...');
 
       const fallbackConnection = new signalR.HubConnectionBuilder()
         .withUrl(hubUrl, {
