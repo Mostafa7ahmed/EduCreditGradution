@@ -1,7 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import SearchNotification from "../../../Shared/Css/SearchInputNotification.module.css";
-import Cards from "../../../Components/cards/cards";
 import styles from "./DashboardSuperAdmin.module.css";
 import Information from "../../../../src/Shared/Css/InfoAndInformation.module.css";
 import ButtonAddDashboard from "../../../Components/ButtonAddDashboard/ButtonAddDashboard";
@@ -134,7 +133,7 @@ export default function SuperAdminRole() {
       </div>
 
       <div className={styles.container}>
-        <Cards />
+        {/* <Cards /> */}
         <div className={`${Information.line}`}></div>
         <ButtonAddDashboard />
         <table className={Table.table}>
