@@ -9,6 +9,7 @@ import { useFormik } from "formik";
 import axios from "axios";
 import { baseUrl } from "../../../../Env/Env";
 import * as Yup from "yup";
+import Swal from "sweetalert2";
 
 export default function AddStudentAdmin() {
   let { accessToken } = useContext(authContext);
@@ -95,6 +96,20 @@ export default function AddStudentAdmin() {
           throw new Error("Failed to add Student");
         }
       } catch (error) {
+        const errorMsg =
+          error.response?.data?.result?.errorMessage ||
+          error.message ||
+          "Failed to add Student";
+        setError(errorMsg);
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: errorMsg,
+          toast: true,
+          position: "top",
+          timer: 3000,
+          showConfirmButton: false,
+        });
       } finally {
         setIsLoading(false);
       }
