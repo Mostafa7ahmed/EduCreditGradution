@@ -63,6 +63,7 @@ import StudyScheduleTeacher from "./Pages/TeacherInformation/ManageGuidance/Stud
 import CourseResultsByTeachers from "./Pages/TeacherInformation/ManageGuidance/StudyScheduleTeacher/CourseResultsByTeachers/CourseResultsByTeachers";
 import AvailableCourses from "./Pages/TeacherInformation/ManageGuidance/StudyScheduleTeacher/AvailableCourses/AvailableCourses";
 import StudentChat from "./Pages/StudentInformation/StudentChat/StudentChat";
+import TeacherChat from "./Pages/TeacherInformation/TeacherChat/TeacherChat";
 import ForgetPassword from "./Pages/Auth/ForgetPassword";
 import ChangePassword from "./Pages/Auth/ChangePassword";
 import ResetPassword from "./Pages/Auth/ResetPassword";
@@ -323,6 +324,10 @@ const router = createBrowserRouter([
       {
         path: "ManageGuidance",
         element: <ManageGuidance />,
+      },
+      {
+        path: "TeacherChat",
+        element: <TeacherChat />,
       },
       {
         path: "/TeacherRole/ManageGuidance/StudyScheduleTeacher/:studentId",

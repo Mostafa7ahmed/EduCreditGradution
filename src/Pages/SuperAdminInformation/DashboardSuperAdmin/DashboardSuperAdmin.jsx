@@ -1,6 +1,7 @@
-import  { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import SearchNotification from "../../../Shared/Css/SearchInputNotification.module.css";
+import Cards from "../../../Components/cards/cards";
 import styles from "./DashboardSuperAdmin.module.css";
 import Information from "../../../../src/Shared/Css/InfoAndInformation.module.css";
 import ButtonAddDashboard from "../../../Components/ButtonAddDashboard/ButtonAddDashboard";
@@ -21,7 +22,8 @@ export default function SuperAdminRole() {
   const [showModal, setShowModal] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
 
-  // ✅ دالة لجلب الأقسام
+  // ✅ دالة لجلب 
+  // Error git
   const fetchDepartments = async () => {
     try {
       const response = await axios.get(`${baseUrl}Department`, {
@@ -132,7 +134,7 @@ export default function SuperAdminRole() {
       </div>
 
       <div className={styles.container}>
-        {/* <Cards /> */}
+        <Cards />
         <div className={`${Information.line}`}></div>
         <ButtonAddDashboard />
         <table className={Table.table}>
@@ -257,17 +259,17 @@ export default function SuperAdminRole() {
                   />
                 </svg>
                 <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                  Are you sure you want to delete the department ?
+                  Are you sure you want to delete the department "
                   <span className="text-gray-900 font-semibold dark:text-white">
                     {selectedDept.name}
                   </span>
-                  
+                  "?
                 </h3>
                 <button
                   onClick={confirmDelete}
                   className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
                 >
-                  Yes, I am sure
+                  Yes, I'm sure
                 </button>
                 <button
                   onClick={() => setShowModal(false)}
