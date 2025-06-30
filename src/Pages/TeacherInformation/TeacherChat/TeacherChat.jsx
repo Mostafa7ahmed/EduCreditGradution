@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState, useRef, useCallback } from "react";
-import styles from "./StudentChat.module.css";
+import styles from "./TeacherChat.module.css";
 import axios from "axios";
 import { authContext } from "../../../Context/AuthContextProvider";
 import { baseUrl } from "../../../Env/Env";
 import * as signalR from "@microsoft/signalr";
 
-export default function StudentChat() {
+export default function TeacherChat() {
   const [chatGroups, setChatGroups] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCourseId, setSelectedCourseId] = useState(null);
@@ -17,7 +17,7 @@ export default function StudentChat() {
   
   const { accessToken, decodedToken } = useContext(authContext);
   const id = decodedToken?.userId;
-  const userName = decodedToken?.name || "User";
+  const userName = decodedToken?.name || "Teacher";
   
   // Use single connection for all courses
   const hubConnection = useRef(null);
@@ -76,12 +76,11 @@ export default function StudentChat() {
     }
   }, [accessToken]);
 
-  // Initialize SignalR connection and set up handlers
-  useEffect(() => {
-    if (!selectedCourseId || !accessToken) return;
-
-    const hubUrl = baseUrl.replace('/api', '') + 'chatHub';
-    console.log('Connecting to Chat Hub:', hubUrl);
+  // Fallback connection method for CORS issues
+  const tryFallbackConnection = async () => {
+    try {
+      const hubUrl = baseUrl.replace('/api', '') + 'chatHub';
+      console.log('🔄 Trying fallback connection...');
 
       const fallbackConnection = new signalR.HubConnectionBuilder()
         .withUrl(hubUrl, {
@@ -285,7 +284,7 @@ export default function StudentChat() {
       <div className={styles.content}>
         <div className={styles.loadingContainer}>
           <div className={styles.loadingSpinner}></div>
-          <p>Loading chat...</p>
+          <p>Loading teacher chat...</p>
         </div>
       </div>
     );
@@ -309,7 +308,7 @@ export default function StudentChat() {
         {/* Sidebar */}
         <div className={styles.sidebar}>
           <div className={styles.sidebarHeader}>
-            <h2 className={styles.headerTitle}>Chats</h2>
+            <h2 className={styles.headerTitle}>Course Chats</h2>
             <div className={styles.connectionStatus}>
               <span className={isConnected ? styles.connected : styles.disconnected}>
                 {isConnected ? "🟢" : "🔴"} {isConnected ? "Connected" : "Disconnected"}
@@ -375,7 +374,7 @@ export default function StudentChat() {
               <div className={styles.messageArea}>
                 {messages.length === 0 ? (
                   <div className={styles.emptyMessages}>
-                    <p>No messages yet. Start the conversation! 💬</p>
+                    <p>No messages yet. Start the conversation with your students! 👨‍🏫💬</p>
                   </div>
                 ) : (
                   messages.map((msg, index) => (
@@ -409,7 +408,7 @@ export default function StudentChat() {
                     value={input}
                     onChange={handleInputChange}
                     onKeyDown={handleKeyPress}
-                    placeholder={isConnected ? "Type a message..." : "Connecting..."}
+                    placeholder={isConnected ? "Type a message to your students..." : "Connecting..."}
                     className={styles.messageInput}
                     disabled={!isConnected}
                   />
@@ -425,7 +424,7 @@ export default function StudentChat() {
             </>
           ) : (
             <div className={styles.noSelection}>
-              <p>Select a chat to start messaging</p>
+              <p>Select a course to start messaging with your students</p>
             </div>
           )}
         </div>
