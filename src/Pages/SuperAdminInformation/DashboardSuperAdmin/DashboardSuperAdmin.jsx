@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import SearchNotification from "../../../Shared/Css/SearchInputNotification.module.css";
 import Cards from "../../../Components/cards/cards";
@@ -22,7 +22,8 @@ export default function SuperAdminRole() {
   const [showModal, setShowModal] = useState(false);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
 
-  // ✅ دالة لجلب الأقسام
+  // ✅ دالة لجلب 
+  // Error git
   const fetchDepartments = async () => {
     try {
       const response = await axios.get(`${baseUrl}Department`, {
