@@ -58,7 +58,7 @@ export default function SidebarStudent() {
             </li>
             <li>
               <NavLink to="/StudentRole/StudentChat">
-                <i class="fa-regular fa-message"></i>
+                <i className="fa-regular fa-message"></i>
                 <p>Chats</p>
               </NavLink>
             </li>
