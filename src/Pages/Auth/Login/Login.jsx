@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import Image from "../../../assets/Images/LoginImage/Frame 3.png";
 import { logo } from "../../../assets/Icons/Logo";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import LoginStyle from "./Login.module.css";
 import { authContext } from "../../../Context/AuthContextProvider";
 import * as Yup from "yup";
@@ -15,6 +15,9 @@ export default function Login() {
   let { setaccessToken, setrefreshToken, setDecodedToken } =
     useContext(authContext);
   const navigate = useNavigate();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const userType = searchParams.get("type");
   const [ErrorMessage, setErrorMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false); //spinner
 
@@ -33,33 +36,59 @@ export default function Login() {
     console.log("🟡 Sending Login Request with:", values);
     try {
       const res = await axios.post(`${baseUrl}Account/login`, values);
-      // console.log("🔵 Response received:", res);
-
       if (res.data.result.accessToken) {
         const decoded = jwtDecode(res.data.result.accessToken);
-        console.log("🔵 Decoded Token Data:", decoded.role);
-        navigate(`/${decoded.role}`);
-
+        // Map userType param to dashboard route, only if role matches
+        let dashboardRoute = "/";
+        // Role enum mapping
+        const roleEnum = ["SuperAdminRole", "AdminRole", "TeacherRole", "StudentRole"];
+        // تحقق أن decoded.role سترينج وليس رقم
+        if (
+          userType !== null &&
+          decoded.role === roleEnum[parseInt(userType)]
+        ) {
+          switch (userType) {
+            case "0":
+              dashboardRoute = "/DashboardSuperAdmin";
+              break;
+            case "1":
+              dashboardRoute = "/DashboardAdmin";
+              break;
+            case "2":
+              dashboardRoute = "/DashboardTeacher";
+              break;
+            case "3":
+              dashboardRoute = "/DashboardStudent";
+              break;
+            default:
+              dashboardRoute = `/Dashboard${roleEnum[decoded.role]}`;
+          }
+        } else {
+          dashboardRoute = `/Dashboard${roleEnum.find(r => r === decoded.role) || ""}`;
+        }
+        navigate(dashboardRoute);
         // ✅ Save Tokens
         localStorage.setItem("accesstoken", res.data.result.accessToken);
         localStorage.setItem("refreshtoken", res.data.result.refreshToken);
         setaccessToken(res.data.result.accessToken);
         setrefreshToken(res.data.result.refreshToken);
         setDecodedToken(decoded); // Save decoded token in context
-
         setIsLoading(false);
         setErrorMessage(null);
-
-        // ✅ Navigate to PersonalInformation after successful login
       } else {
         setIsLoading(false);
         throw new Error("Login failed! Invalid response from server.");
       }
     } catch (error) {
-      console.error("Login failed", error.response.data.result.errorMessage);
-      const errorMsg = error.response.data.result.errorMessage;
+      setIsLoading(false); // Always stop loading spinner
+      let errorMsg = "Login failed!";
+      if (error.response && error.response.data && error.response.data.result && error.response.data.result.errorMessage) {
+        errorMsg = error.response.data.result.errorMessage;
+      } else if (error.message) {
+        errorMsg = error.message;
+      }
       setErrorMessage(errorMsg);
-      setIsLoading(false);
+      console.error("Login failed", errorMsg);
     }
   }
 

@@ -67,6 +67,7 @@ import TeacherChat from "./Pages/TeacherInformation/TeacherChat/TeacherChat";
 import ForgetPassword from "./Pages/Auth/ForgetPassword";
 import ChangePassword from "./Pages/Auth/ChangePassword";
 import ResetPassword from "./Pages/Auth/ResetPassword";
+import NotFound from "./Pages/NotFound/NotFound";
 
 const router = createBrowserRouter([
   {
@@ -354,6 +355,46 @@ const router = createBrowserRouter([
   {
     path: "/auth/reset-password",
     element: <ResetPassword />,
+  },
+  {
+    path: "/DashboardSuperAdmin",
+    element: <SidebarSuperAdmin />, // Super Admin dashboard wrapper
+    children: [
+      { path: "", element: <DashboardSuperAdmin /> },
+      { path: "PersonalInformation", element: <PersonalInformation /> },
+      // ...add more super admin children as needed
+    ],
+  },
+  {
+    path: "/DashboardAdmin",
+    element: <SidebarAdmin />, // Admin dashboard wrapper
+    children: [
+      { path: "", element: <DashboardAdmin /> },
+      { path: "PersonalInformation", element: <PersonalInformation /> },
+      // ...add more admin children as needed
+    ],
+  },
+  {
+    path: "/DashboardTeacher",
+    element: <SidebarTeacher />, // Teacher dashboard wrapper
+    children: [
+      { path: "", element: <DashboardTeacher /> },
+      { path: "PersonalInformation", element: <PersonalInformation /> },
+      // ...add more teacher children as needed
+    ],
+  },
+  {
+    path: "/DashboardStudent",
+    element: <SidebarStudent />, // Student dashboard wrapper
+    children: [
+      { path: "", element: <DashboardStudent /> },
+      { path: "PersonalInformation", element: <PersonalInformation /> },
+      // ...add more student children as needed
+    ],
+  },
+  {
+    path: "*",
+    element: <NotFound />,
   },
 ]);
 

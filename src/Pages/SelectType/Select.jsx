@@ -15,22 +15,22 @@ export default function Select() {
           {/* الكروت */}
           <div className={`${Style.CardsSelect}`}>
             {/* card 1  */}
-            <Link to="/Login" className={`${Style.CardSelect}`}>
+            <Link to="/Login?type=0" className={`${Style.CardSelect}`}>
               <i className="fa-solid fa-user-gear fa-flip-horizontal"></i>
               <p className="font-semibold text-center ">Super Admin</p>
             </Link>
             {/* card 2  */}
-            <Link to="/Login" className={`${Style.CardSelect}`}>
+            <Link to="/Login?type=1" className={`${Style.CardSelect}`}>
               <i className="fa-solid fa-user-shield fa-flip-horizontal"></i>
               <p className="font-semibold text-center ">Admin</p>
             </Link>
             {/* card 3  */}
-            <Link to="/Login" className={`${Style.CardSelect}`}>
+            <Link to="/Login?type=2" className={`${Style.CardSelect}`}>
               <i className="fa-solid fa-user-tie"></i>
               <p className="font-semibold text-center ">Teacher</p>
             </Link>
             {/* card 4  */}
-            <Link to="/Login" className={`${Style.CardSelect}`}>
+            <Link to="/Login?type=3" className={`${Style.CardSelect}`}>
               <i className="fa-solid fa-user-graduate fa-flip-horizontal"></i>
               <p className="font-semibold text-center ">Student</p>
             </Link>
