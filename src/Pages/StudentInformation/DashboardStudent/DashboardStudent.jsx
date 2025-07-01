@@ -24,31 +24,24 @@ export default function DashboardStudent() {
   const location = useLocation();
   const notificationRef = useRef(null);
   
-  // Use the clean notification service
-  const { notifications: signalRNotifications, isConnected } = useNotificationService();
+  // Use the notification service (API-based)
+  const { notifications: apiNotifications } = useNotificationService();
   const [localNotifications, setLocalNotifications] = useState([]);
 
-  // Handle notifications from SignalR service
+  // Show notifications from API (like teacher dashboard)
   useEffect(() => {
-    if (signalRNotifications) {
-      console.log("Received SignalR notification:", signalRNotifications);
-      setLocalNotifications((prev) => [
-        {
-          id: Date.now(),
-          message: signalRNotifications,
-          type: "signalr",
+    if (Array.isArray(apiNotifications) && apiNotifications.length > 0) {
+      setLocalNotifications(
+        apiNotifications.map((n, idx) => ({
+          id: n.createdAt + idx,
+          message: n.message,
+          title: n.title,
           read: false,
-          timestamp: new Date(),
-        },
-        ...prev,
-      ]);
-      
-      // Refresh courses if it's an enrollment-related notification
-      if (signalRNotifications.includes("👨‍🏫") || signalRNotifications.includes("🧑‍🎓")) {
-        fetchCourses();
-      }
+          timestamp: n.createdAt,
+        }))
+      );
     }
-  }, [signalRNotifications]);
+  }, [apiNotifications]);
 
   // Fetch the list of students
   const fetchData = async () => {
@@ -215,8 +208,7 @@ export default function DashboardStudent() {
   // Get unread notifications count
   const unreadCount = localNotifications.filter((n) => !n.read).length;
   
-  // Get connection status text
-  const connectionStatus = isConnected ? "Connected" : "Disconnected";
+
 
   return (
     <>
@@ -244,11 +236,7 @@ export default function DashboardStudent() {
                 </span>
               )}
             </div>
-            {/* Connection status indicator */}
-            <div className={styles.connectionStatus}>
-              <span className={`${styles.statusDot} ${isConnected ? styles.connected : styles.disconnected}`}></span>
-              <span className={styles.statusText}>{connectionStatus}</span>
-            </div>
+
           </div>
         </div>
       </div>
@@ -282,12 +270,7 @@ export default function DashboardStudent() {
                 </div>
                 <h4>No notifications yet</h4>
                 <p>You'll see enrollment updates and important messages here</p>
-                <div className={styles.connectionInfo}>
-                  <div className={styles.connectionIndicator}>
-                    <span className={`${styles.statusDot} ${isConnected ? styles.connected : styles.disconnected}`}></span>
-                    <span>{connectionStatus}</span>
-                  </div>
-                </div>
+                {/* Connection info removed: no isConnected or connectionStatus in API notifications */}
               </div>
             ) : (
               localNotifications.map((notification) => (
