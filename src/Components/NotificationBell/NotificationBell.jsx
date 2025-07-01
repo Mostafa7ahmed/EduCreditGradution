@@ -1,33 +1,23 @@
+
 import React, { useState } from 'react';
 import { useNotificationService } from '../../Service/NotificationService';
 import styles from './NotificationBell.module.css';
 
 export default function NotificationBell() {
-  const { notifications, isConnected, clearNotification } = useNotificationService();
+  const { notifications, loading, error, refetch } = useNotificationService();
   const [showNotifications, setShowNotifications] = useState(false);
 
   const toggleNotifications = () => {
     setShowNotifications(!showNotifications);
   };
 
-  const handleClearNotification = () => {
-    clearNotification();
-    setShowNotifications(false);
-  };
-
   return (
     <div className={styles.notificationContainer}>
-      {/* Connection Status Indicator */}
-      <div className={styles.connectionStatus}>
-        <span className={`${styles.statusDot} ${isConnected ? styles.connected : styles.disconnected}`}></span>
-        <span className={styles.statusText}>{isConnected ? 'Connected' : 'Disconnected'}</span>
-      </div>
-
       {/* Notification Bell */}
       <div className={styles.notificationBell} onClick={toggleNotifications}>
         <i className="far fa-bell"></i>
-        {notifications && (
-          <span className={styles.notificationBadge}>1</span>
+        {Array.isArray(notifications) && notifications.length > 0 && (
+          <span className={styles.notificationBadge}>{notifications.length}</span>
         )}
       </div>
 
@@ -36,25 +26,26 @@ export default function NotificationBell() {
         <div className={styles.notificationPopup}>
           <div className={styles.notificationHeader}>
             <h3>Notifications</h3>
-            <button className={styles.clearButton} onClick={handleClearNotification}>
-              Clear
+            <button className={styles.clearButton} onClick={refetch}>
+              Refresh
             </button>
           </div>
           <div className={styles.notificationList}>
-            {notifications ? (
-              <div className={styles.notificationItem}>
-                <p>{notifications}</p>
-                <span className={styles.notificationTime}>
-                  {new Date().toLocaleTimeString()}
-                </span>
-              </div>
-            ) : (
-              <div className={styles.noNotifications}>
-                No notifications
-                <div className={styles.connectionInfo}>
-                  Status: {isConnected ? '✅ Connected' : '❌ Disconnected'}
-                </div>
-              </div>
+            {loading && <div>Loading...</div>}
+            {error && <div style={{ color: 'red' }}>Error: {error}</div>}
+            {(!Array.isArray(notifications) || notifications.length === 0) && !loading && !error && (
+              <div className={styles.noNotifications}>No notifications</div>
+            )}
+            {Array.isArray(notifications) && notifications.length > 0 && (
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                {notifications.filter(n => n && typeof n === 'object' && n.title && n.message && n.createdAt).map((n, idx) => (
+                  <li key={String(n.createdAt) + idx} className={styles.notificationItem}>
+                    <strong>{String(n.title)}</strong>
+                    <p>{String(n.message)}</p>
+                    <small>{new Date(n.createdAt).toLocaleString()}</small>
+                  </li>
+                ))}
+              </ul>
             )}
           </div>
         </div>

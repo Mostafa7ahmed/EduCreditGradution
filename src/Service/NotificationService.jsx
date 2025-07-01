@@ -10,10 +10,12 @@ export const useNotificationService = () => {
   const fetchNotifications = async () => {
     setLoading(true);
     setError(null);
+          const token = localStorage.getItem('accesstoken');
+
     try {
       const response = await fetch('https://educredit.runasp.net/api/Notifications', {
-        headers: {
-          'accept': '*/*',
+      headers: {
+         'Authorization': `Bearer ${token}` ,
         },
       });
       if (!response.ok) throw new Error('Failed to fetch notifications');

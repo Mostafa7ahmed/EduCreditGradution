@@ -29,8 +29,7 @@ export default function DashboardTeacher() {
   const notificationRef = useRef(null);
 
   const { decodedToken, accessToken } = useContext(authContext);
-  const { notifications: signalRNotifications, isConnected } =
-    useNotificationService();
+  const { notifications: apiNotifications } = useNotificationService();
   const [localNotifications, setLocalNotifications] = useState([]);
 
   // Fetch statistics and courses when decodedToken and accessToken are available
@@ -81,30 +80,20 @@ export default function DashboardTeacher() {
     fetchData();
   }, [decodedToken, accessToken]);
 
-  // Handle SignalR notifications
+  // Show notifications from API
   useEffect(() => {
-    if (signalRNotifications) {
-      console.log(
-        "Teacher received SignalR notification:",
-        signalRNotifications
-      );
-      setLocalNotifications((prev) => [
-        {
-          id: Date.now(),
-          message: signalRNotifications,
-          type: "signalr",
+    if (Array.isArray(apiNotifications) && apiNotifications.length > 0) {
+      setLocalNotifications(
+        apiNotifications.map((n, idx) => ({
+          id: n.createdAt + idx,
+          message: n.message,
+          title: n.title,
           read: false,
-          timestamp: new Date(),
-        },
-        ...prev,
-      ]);
-
-      // Fetch courses again when a notification is received
-      if (decodedToken?.userId && accessToken) {
-        fetchCourses();
-      }
+          timestamp: n.createdAt,
+        }))
+      );
     }
-  }, [signalRNotifications, decodedToken, accessToken]);
+  }, [apiNotifications]);
 
   // Fetch courses function
   const fetchCourses = async () => {
@@ -183,7 +172,6 @@ export default function DashboardTeacher() {
 
   const totalPages = Math.ceil(filteredSchedules.length / pageSize);
   const unreadCount = localNotifications.filter((n) => !n.read).length;
-  const connectionStatus = isConnected ? "Connected" : "Disconnected";
 
   return (
     <>
@@ -211,19 +199,7 @@ export default function DashboardTeacher() {
                 </span>
               )}
             </div>
-            {/* Connection status indicator */}
-            <div className={dashboardTeacher.connectionStatus}>
-              <span
-                className={`${dashboardTeacher.statusDot} ${
-                  isConnected
-                    ? dashboardTeacher.connected
-                    : dashboardTeacher.disconnected
-                }`}
-              ></span>
-              <span className={dashboardTeacher.statusText}>
-                {connectionStatus}
-              </span>
-            </div>
+            {/* Connection status indicator removed (API notifications) */}
           </div>
         </div>
       </div>
